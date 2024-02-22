@@ -12,4 +12,6 @@ DESCRIPTION:
 
 RESOURCES:
 
+* https://docs.unity3d.com/
+* https://gamedevbeginner.com/how-to-use-player-prefs-in-unity/
 * 

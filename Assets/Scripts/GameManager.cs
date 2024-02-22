@@ -9,7 +9,7 @@ using UnityEngine.EventSystems;
 public class GameManager : MonoBehaviour
 {
     // GameObject Variables
-    public GameObject startScreen, winScreen, inGameUI, pauseScreen;
+    public GameObject startScreen, winScreen, inGameUI, pauseScreen, chooseScreen;
 
     // TextMeshProUGUI Variables
 
@@ -42,6 +42,7 @@ public class GameManager : MonoBehaviour
     void CloseMenus()
     {
         startScreen.SetActive(false);
+        chooseScreen.SetActive(false);
         winScreen.SetActive(false);
         inGameUI.SetActive(false);
         pauseScreen.SetActive(false);
@@ -53,6 +54,15 @@ public class GameManager : MonoBehaviour
         gameActive = false;
         CloseMenus();
         startScreen.SetActive(true);
+    }
+
+    // Opens the Menu where Players choose to continue or start a new game
+    public void ChooseGame()
+    {
+        Debug.Log("ChooseGame() called");
+        gameActive = false;
+        CloseMenus();
+        chooseScreen.SetActive(true);
     }
 
     // Opens the Win Screen

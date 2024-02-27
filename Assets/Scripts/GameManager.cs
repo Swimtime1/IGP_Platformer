@@ -59,7 +59,6 @@ public class GameManager : MonoBehaviour
     // Opens the Menu where Players choose to continue or start a new game
     public void ChooseGame()
     {
-        Debug.Log("ChooseGame() called");
         gameActive = false;
         CloseMenus();
         chooseScreen.SetActive(true);

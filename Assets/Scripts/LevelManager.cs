@@ -9,7 +9,8 @@ public class LevelManager : MonoBehaviour
     public GameObject cam;
 
     // Integer Variables
-    private int currLev, maxLev;
+    public int currLev;
+    private int maxLev;
 
     // Script Variables
     public PlayerController playerController;
@@ -20,7 +21,6 @@ public class LevelManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        currLev = 0;
         maxLev = 0;
 
         ChooseLev(currLev);

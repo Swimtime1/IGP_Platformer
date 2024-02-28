@@ -10,6 +10,7 @@ public class GameManager : MonoBehaviour
 {
     // GameObject Variables
     public GameObject startScreen, winScreen, inGameUI, pauseScreen, chooseScreen;
+    public GameObject cam;
 
     // TextMeshProUGUI Variables
 
@@ -25,6 +26,9 @@ public class GameManager : MonoBehaviour
     // Sprite Variables
 
     // Image Variables
+
+    // Script Variables
+    public LevelManager lm;
     
     // Start is called before the first frame update
     void Start()
@@ -32,11 +36,11 @@ public class GameManager : MonoBehaviour
         gameActive = false;
     }
 
-    // Update is called once per frame
+    /* // Update is called once per frame
     void Update()
     {
         
-    }
+    } */
 
     // Deactivates every menu
     void CloseMenus()
@@ -87,5 +91,15 @@ public class GameManager : MonoBehaviour
         gameActive = false;
         CloseMenus();
         pauseScreen.SetActive(true);
+    }
+
+    // Moves to the next level
+    public void OpenNextLevel()
+    {
+        gameActive = false;
+        cam.SetActive(false);
+        lm.ChooseLev();
+        cam.SetActive(true);
+        gameActive = true;
     }
 }

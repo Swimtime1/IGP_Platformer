@@ -18,6 +18,10 @@ public class PlayerController : MonoBehaviour
 
     // Script Variables
     private PlatformerActions input;
+    public GameManager gm;
+
+    // GameObject Variables
+    public GameObject player;
 
     // Called when the game is loaded
     private void Awake()
@@ -28,10 +32,6 @@ public class PlayerController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        speed = 10f;
-        jumpLim = 5f;
-        castDist = 1f;
-
         jump = false;
         isGround = false;
     }
@@ -40,7 +40,7 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down, castDist);
-        Debug.DrawRay(transform.position, Vector2.down * castDist, Color.red, 0); // draws ray in scene
+        Debug.DrawRay(transform.position, Vector2.down * castDist, Color.red, 0f); // draws ray in scene
 
         // Determines if this object is touching the ground
         if(hit.collider != null && hit.collider.gameObject.CompareTag("Ground"))
@@ -103,5 +103,18 @@ public class PlayerController : MonoBehaviour
     private void OnJumpCanceled(InputAction.CallbackContext context)
     {
         jump = false;
+    }
+
+    // Moves the player to the start of the next level
+    public void MoveLevels(Vector3 pos)
+    {
+        player.transform.position = pos;
+    }
+
+    // Called when the Player first touches a trigger
+    void OnTriggerEnter2D(Collider2D other)
+    {
+        // tells the game to move to the next level
+        if(other.gameObject.CompareTag("Goal")) { gm.OpenNextLevel(); }
     }
 }

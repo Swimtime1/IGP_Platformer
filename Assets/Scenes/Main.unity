@@ -624,6 +624,11 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!1 &336123912 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8446092141909518840, guid: 2a586f78a8f685543bf768ff6bb07ff1, type: 3}
+  m_PrefabInstance: {fileID: 489287461}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &489287461
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -642,7 +647,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8446092141909518840, guid: 2a586f78a8f685543bf768ff6bb07ff1, type: 3}
       propertyPath: m_Name
-      value: Level 1
+      value: Level 0
       objectReference: {fileID: 0}
     - target: {fileID: 8699074009491267092, guid: 2a586f78a8f685543bf768ff6bb07ff1, type: 3}
       propertyPath: m_LocalPosition.x
@@ -799,6 +804,7 @@ GameObject:
   m_Component:
   - component: {fileID: 832989418}
   - component: {fileID: 832989417}
+  - component: {fileID: 832989419}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -823,6 +829,8 @@ MonoBehaviour:
   inGameUI: {fileID: 19283468}
   pauseScreen: {fileID: 2100290451}
   chooseScreen: {fileID: 1726940631}
+  cam: {fileID: 519420028}
+  lm: {fileID: 832989419}
 --- !u!4 &832989418
 Transform:
   m_ObjectHideFlags: 0
@@ -838,6 +846,26 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &832989419
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 832989416}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5739cf1b3f39b7e41b7a549449ea8dc1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  levels:
+  - {fileID: 336123912}
+  cam: {fileID: 519420028}
+  playerController: {fileID: 1191100704}
+  startPos:
+  - {x: 0, y: -3.5, z: 0}
+  camPos:
+  - {x: 0, y: 0, z: -10}
 --- !u!1 &981345297
 GameObject:
   m_ObjectHideFlags: 0
@@ -1139,11 +1167,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1105b81818e4b49429631da5679e650a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 0
-  jumpLim: 0
-  castDist: 0
+  speed: 10
+  jumpLim: 5
+  castDist: 1
   rb: {fileID: 1191100702}
   isGround: 0
+  gm: {fileID: 832989417}
+  player: {fileID: 1191100699}
 --- !u!1 &1244859194
 GameObject:
   m_ObjectHideFlags: 0

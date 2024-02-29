@@ -15,7 +15,7 @@ public class PlayerController : MonoBehaviour
     public Rigidbody2D rb;
 
     // Boolean Variables
-    private bool jump;
+    private bool jump, isDissolvable;
     public bool isGround;
 
     // Script Variables
@@ -24,6 +24,9 @@ public class PlayerController : MonoBehaviour
 
     // GameObject Variables
     public GameObject player;
+
+    // RaycastHit2D Variables
+    private RaycastHit2D dHit, lHit, rHit;
 
     #endregion
 
@@ -43,27 +46,9 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        RaycastHit2D dHit = Physics2D.Raycast(transform.position, Vector2.down, castDist);
-        Debug.DrawRay(transform.position, Vector2.down * castDist, Color.red, 0f); // draws ray in scene
-
-        RaycastHit2D lHit = Physics2D.Raycast(transform.position, Vector2.left, castDist);
-        Debug.DrawRay(transform.position, Vector2.left * castDist, Color.red, 0f); // draws ray in scene
-
-        RaycastHit2D rHit = Physics2D.Raycast(transform.position, Vector2.right, castDist);
-        Debug.DrawRay(transform.position, Vector2.right * castDist, Color.red, 0f); // draws ray in scene
-
-        // Determines if this object is touching the ground
-        if(dHit.collider != null && dHit.collider.gameObject.CompareTag("Ground"))
-        { isGround = true; }
-        else if(lHit.collider != null && lHit.collider.gameObject.CompareTag("Ground"))
-        {
-            isGround = true;
-        }
-        else if(rHit.collider != null && rHit.collider.gameObject.CompareTag("Ground"))
-        {
-            isGround = true;
-        }
-        else { isGround = false; }
+        DrawCast();
+        isGround = CheckTouching("Ground", 1);
+        isDissolvable = CheckTouching("Dissolvable", 10);
     }
 
     // Called once per set-time frame
@@ -79,6 +64,51 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    #region RaycastHit2D
+
+    // Updates the Raycasts
+    private void DrawCast()
+    {
+        dHit = Physics2D.Raycast(transform.position, Vector2.down, castDist);
+        Debug.DrawRay(transform.position, Vector2.down * castDist, Color.red, 0f); // draws ray in scene
+
+        lHit = Physics2D.Raycast(transform.position, Vector2.left, castDist);
+        Debug.DrawRay(transform.position, Vector2.left * castDist, Color.red, 0f); // draws ray in scene
+
+        rHit = Physics2D.Raycast(transform.position, Vector2.right, castDist);
+        Debug.DrawRay(transform.position, Vector2.right * castDist, Color.red, 0f); // draws ray in scene
+    }
+
+    // Checks if the player can jump
+    private bool CheckTouching(string other, int lev)
+    {
+        bool pastLev = LevelManager.currLev >= lev;
+        
+        // Determines if this object is touching a specific type of object below it
+        if(dHit.collider != null && dHit.collider.gameObject.CompareTag(other) && pastLev)
+        { return true; }
+
+        // Ensures wall jumping can occur a level after regular jumping can
+        if(other == "Ground") { pastLev = LevelManager.currLev >= (lev + 2); }
+
+        // Determines if this object is touching a specific type of object to its left
+        if(lHit.collider != null && lHit.collider.gameObject.CompareTag(other) && pastLev)
+        {
+            return true;
+        }
+
+        // Determines if this object is touching a specific type of object to its right
+        if(rHit.collider != null && rHit.collider.gameObject.CompareTag(other) && pastLev)
+        {
+            return true;
+        }
+
+        // Assumes other is not being touched
+        return false;
+    }
+
+    #endregion
+
     // Called when the script is enabled
     private void OnEnable()
     {
@@ -87,6 +117,8 @@ public class PlayerController : MonoBehaviour
         input.Player.Move.canceled += OnMoveCanceled;
         input.Player.Jump.performed += OnJumpPerformed;
         input.Player.Jump.canceled += OnJumpCanceled;
+        input.Player.Dissolve.performed += OnDissolvePerformed;
+        input.Player.Dissolve.canceled += OnDissolveCanceled;
     }
 
     // Called when the script is disabled
@@ -97,6 +129,8 @@ public class PlayerController : MonoBehaviour
         input.Player.Move.canceled -= OnMoveCanceled;
         input.Player.Jump.performed -= OnJumpPerformed;
         input.Player.Jump.canceled -= OnJumpCanceled;
+        input.Player.Dissolve.performed -= OnDissolvePerformed;
+        input.Player.Dissolve.canceled -= OnDissolveCanceled;
     }
 
     #region Input
@@ -123,6 +157,18 @@ public class PlayerController : MonoBehaviour
     private void OnJumpCanceled(InputAction.CallbackContext context)
     {
         jump = false;
+    }
+
+    // Called when any of the binds associated with Dissolve in input are used
+    private void OnDissolvePerformed(InputAction.CallbackContext context)
+    {
+        Debug.Log("Dissolving");
+    }
+
+    // Called when any of the binds associated with Dissolve in input stop being used
+    private void OnDissolveCanceled(InputAction.CallbackContext context)
+    {
+        Debug.Log("Stopped Dissolving");
     }
 
     #endregion

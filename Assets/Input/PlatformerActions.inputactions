@@ -22,6 +22,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "Dissolve",
+                    "type": "Button",
+                    "id": "44f05fe0-a106-4dc8-8d33-d224f4306cc5",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -143,6 +152,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "Jump",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "e92989b9-b9ff-43ba-8076-6378d41ac610",
+                    "path": "<Keyboard>/j",
+                    "interactions": "Hold",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Dissolve",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

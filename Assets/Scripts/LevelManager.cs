@@ -11,7 +11,7 @@ public class LevelManager : MonoBehaviour
     public GameObject cam;
 
     // Integer Variables
-    public int currLev;
+    public static int currLev;
     private int maxLev;
 
     // Script Variables

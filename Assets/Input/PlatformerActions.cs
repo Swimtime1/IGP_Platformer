@@ -44,6 +44,15 @@ public partial class @PlatformerActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Dissolve"",
+                    ""type"": ""Button"",
+                    ""id"": ""44f05fe0-a106-4dc8-8d33-d224f4306cc5"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -167,6 +176,17 @@ public partial class @PlatformerActions: IInputActionCollection2, IDisposable
                     ""action"": ""Jump"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""e92989b9-b9ff-43ba-8076-6378d41ac610"",
+                    ""path"": ""<Keyboard>/j"",
+                    ""interactions"": ""Hold"",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Dissolve"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -177,6 +197,7 @@ public partial class @PlatformerActions: IInputActionCollection2, IDisposable
         m_Player = asset.FindActionMap("Player", throwIfNotFound: true);
         m_Player_Move = m_Player.FindAction("Move", throwIfNotFound: true);
         m_Player_Jump = m_Player.FindAction("Jump", throwIfNotFound: true);
+        m_Player_Dissolve = m_Player.FindAction("Dissolve", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -240,12 +261,14 @@ public partial class @PlatformerActions: IInputActionCollection2, IDisposable
     private List<IPlayerActions> m_PlayerActionsCallbackInterfaces = new List<IPlayerActions>();
     private readonly InputAction m_Player_Move;
     private readonly InputAction m_Player_Jump;
+    private readonly InputAction m_Player_Dissolve;
     public struct PlayerActions
     {
         private @PlatformerActions m_Wrapper;
         public PlayerActions(@PlatformerActions wrapper) { m_Wrapper = wrapper; }
         public InputAction @Move => m_Wrapper.m_Player_Move;
         public InputAction @Jump => m_Wrapper.m_Player_Jump;
+        public InputAction @Dissolve => m_Wrapper.m_Player_Dissolve;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -261,6 +284,9 @@ public partial class @PlatformerActions: IInputActionCollection2, IDisposable
             @Jump.started += instance.OnJump;
             @Jump.performed += instance.OnJump;
             @Jump.canceled += instance.OnJump;
+            @Dissolve.started += instance.OnDissolve;
+            @Dissolve.performed += instance.OnDissolve;
+            @Dissolve.canceled += instance.OnDissolve;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
@@ -271,6 +297,9 @@ public partial class @PlatformerActions: IInputActionCollection2, IDisposable
             @Jump.started -= instance.OnJump;
             @Jump.performed -= instance.OnJump;
             @Jump.canceled -= instance.OnJump;
+            @Dissolve.started -= instance.OnDissolve;
+            @Dissolve.performed -= instance.OnDissolve;
+            @Dissolve.canceled -= instance.OnDissolve;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -292,5 +321,6 @@ public partial class @PlatformerActions: IInputActionCollection2, IDisposable
     {
         void OnMove(InputAction.CallbackContext context);
         void OnJump(InputAction.CallbackContext context);
+        void OnDissolve(InputAction.CallbackContext context);
     }
 }

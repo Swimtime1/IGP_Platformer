@@ -39,12 +39,26 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down, castDist);
+        RaycastHit2D dHit = Physics2D.Raycast(transform.position, Vector2.down, castDist);
         Debug.DrawRay(transform.position, Vector2.down * castDist, Color.red, 0f); // draws ray in scene
 
+        RaycastHit2D lHit = Physics2D.Raycast(transform.position, Vector2.left, castDist);
+        Debug.DrawRay(transform.position, Vector2.left * castDist, Color.red, 0f); // draws ray in scene
+
+        RaycastHit2D rHit = Physics2D.Raycast(transform.position, Vector2.right, castDist);
+        Debug.DrawRay(transform.position, Vector2.right * castDist, Color.red, 0f); // draws ray in scene
+
         // Determines if this object is touching the ground
-        if(hit.collider != null && hit.collider.gameObject.CompareTag("Ground"))
+        if(dHit.collider != null && dHit.collider.gameObject.CompareTag("Ground"))
         { isGround = true; }
+        else if(lHit.collider != null && lHit.collider.gameObject.CompareTag("Ground"))
+        {
+            isGround = true;
+        }
+        else if(rHit.collider != null && rHit.collider.gameObject.CompareTag("Ground"))
+        {
+            isGround = true;
+        }
         else { isGround = false; }
     }
 

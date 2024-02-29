@@ -11,7 +11,7 @@ public class LevelManager : MonoBehaviour
     public GameObject cam;
 
     // Integer Variables
-    public static int currLev;
+    public int currLev;
     private int maxLev;
 
     // Script Variables
@@ -25,7 +25,7 @@ public class LevelManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        maxLev = 0;
+        maxLev = currLev;
 
         ChooseLev(currLev);
     }
@@ -33,8 +33,8 @@ public class LevelManager : MonoBehaviour
     // Updates the maximum level unlocked and calls ChooseLev(maxLev + 1)
     public void ChooseLev()
     {
-        maxLev++;
-        currLev = maxLev;
+        currLev++;
+        if(currLev > maxLev) { maxLev = currLev; } // updates maxLev if necessary
         
         // makes sure another level is available
         if(maxLev < levels.Length) { ChooseLev(maxLev); }

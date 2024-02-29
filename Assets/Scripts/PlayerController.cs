@@ -21,6 +21,7 @@ public class PlayerController : MonoBehaviour
     // Script Variables
     private PlatformerActions input;
     public GameManager gm;
+    public LevelManager lm;
 
     // GameObject Variables
     public GameObject player;
@@ -82,14 +83,14 @@ public class PlayerController : MonoBehaviour
     // Checks if the player can jump
     private bool CheckTouching(string other, int lev)
     {
-        bool pastLev = LevelManager.currLev >= lev;
+        bool pastLev = lm.currLev >= lev;
         
         // Determines if this object is touching a specific type of object below it
         if(dHit.collider != null && dHit.collider.gameObject.CompareTag(other) && pastLev)
         { return true; }
 
         // Ensures wall jumping can occur a level after regular jumping can
-        if(other == "Ground") { pastLev = LevelManager.currLev >= (lev + 2); }
+        if(other == "Ground") { pastLev = lm.currLev >= (lev + 2); }
 
         // Determines if this object is touching a specific type of object to its left
         if(lHit.collider != null && lHit.collider.gameObject.CompareTag(other) && pastLev)

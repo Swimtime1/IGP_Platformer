@@ -5,6 +5,8 @@ using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
+    #region Variables
+    
     // Float Variables
     public float speed, jumpLim, castDist;
     private float horizontalMove;
@@ -22,6 +24,8 @@ public class PlayerController : MonoBehaviour
 
     // GameObject Variables
     public GameObject player;
+
+    #endregion
 
     // Called when the game is loaded
     private void Awake()
@@ -95,6 +99,8 @@ public class PlayerController : MonoBehaviour
         input.Player.Jump.canceled -= OnJumpCanceled;
     }
 
+    #region Input
+    
     // Called when any of the binds associated with Move in input are used
     private void OnMovePerformed(InputAction.CallbackContext context)
     {
@@ -118,6 +124,8 @@ public class PlayerController : MonoBehaviour
     {
         jump = false;
     }
+
+    #endregion
 
     // Moves the player to the start of the next level
     public void MoveLevels(Vector3 pos)

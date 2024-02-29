@@ -8,6 +8,8 @@ using UnityEngine.EventSystems;
 
 public class GameManager : MonoBehaviour
 {
+    #region Variables
+    
     // GameObject Variables
     public GameObject startScreen, winScreen, inGameUI, pauseScreen, chooseScreen;
     public GameObject cam;
@@ -29,6 +31,8 @@ public class GameManager : MonoBehaviour
 
     // Script Variables
     public LevelManager lm;
+
+    #endregion
     
     // Start is called before the first frame update
     void Start()
@@ -42,6 +46,8 @@ public class GameManager : MonoBehaviour
         
     } */
 
+    #region Menu Operations
+    
     // Deactivates every menu
     void CloseMenus()
     {
@@ -92,6 +98,8 @@ public class GameManager : MonoBehaviour
         CloseMenus();
         pauseScreen.SetActive(true);
     }
+
+    #endregion
 
     // Moves to the next level
     public void OpenNextLevel()

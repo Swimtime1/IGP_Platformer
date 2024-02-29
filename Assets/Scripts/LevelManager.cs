@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class LevelManager : MonoBehaviour
 {
+    #region Variables
+    
     // GameObject Variables
     public GameObject[] levels;
     public GameObject cam;
@@ -17,6 +19,8 @@ public class LevelManager : MonoBehaviour
 
     // Vector3 Variables
     public Vector3[] startPos, camPos;
+
+    #endregion
     
     // Start is called before the first frame update
     void Start()

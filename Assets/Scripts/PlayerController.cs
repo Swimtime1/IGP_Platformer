@@ -16,7 +16,7 @@ public class PlayerController : MonoBehaviour
 
     // Boolean Variables
     private bool jump, isDissolvable;
-    public bool isGround;
+    public bool isGround, isPush;
 
     // Script Variables
     private PlatformerActions input;
@@ -48,7 +48,8 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         DrawCast();
-        isGround = CheckTouching("Ground", 1);
+        isPush = CheckTouching("Push Block", 1);
+        isGround = CheckTouching("Ground", 1) || isPush;
         isDissolvable = CheckTouching("Dissolvable", 10);
     }
 

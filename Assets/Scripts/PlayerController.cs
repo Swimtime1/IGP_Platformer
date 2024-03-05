@@ -15,7 +15,7 @@ public class PlayerController : MonoBehaviour
     public Rigidbody2D rb;
 
     // Boolean Variables
-    private bool jump, isDissolvable;
+    private bool jump, isDissolvable, dissolving;
     public bool isGround, isPush;
 
     // Script Variables
@@ -42,6 +42,7 @@ public class PlayerController : MonoBehaviour
     {
         jump = false;
         isGround = false;
+        dissolving = false;
     }
 
     // Update is called once per frame
@@ -50,7 +51,7 @@ public class PlayerController : MonoBehaviour
         DrawCast();
         isPush = CheckTouching("Push Block", 1);
         isGround = CheckTouching("Ground", 1) || isPush;
-        isDissolvable = CheckTouching("Dissolvable", 10);
+        isDissolvable = CheckTouching("Dissolvable", 8);
     }
 
     // Called once per set-time frame
@@ -84,14 +85,14 @@ public class PlayerController : MonoBehaviour
     // Checks if the player can jump
     private bool CheckTouching(string other, int lev)
     {
-        bool pastLev = lm.currLev >= lev;
+        bool pastLev = lm.GetMaxLev() >= lev;
         
         // Determines if this object is touching a specific type of object below it
         if(dHit.collider != null && dHit.collider.gameObject.CompareTag(other) && pastLev)
         { return true; }
 
         // Ensures wall jumping can occur a level after regular jumping can
-        if(other == "Ground") { pastLev = lm.currLev >= (lev + 2); }
+        if(other == "Ground") { pastLev = lm.GetMaxLev() >= (lev + 2); }
 
         // Determines if this object is touching a specific type of object to its left
         if(lHit.collider != null && lHit.collider.gameObject.CompareTag(other) && pastLev)
@@ -164,13 +165,29 @@ public class PlayerController : MonoBehaviour
     // Called when any of the binds associated with Dissolve in input are used
     private void OnDissolvePerformed(InputAction.CallbackContext context)
     {
-        Debug.Log("Dissolving");
+        // makes sure something dissolvable is actually being touched
+        if(isDissolvable && !dissolving)
+        {
+            dissolving = true;
+            
+            // Determines if this object is touching a specific type of object to its left
+            if(lHit.collider != null && lHit.collider.gameObject.CompareTag("Dissolvable"))
+            {
+                StartCoroutine(Dissolve(lHit.collider.gameObject));
+            }
+
+            // Determines if this object is touching a specific type of object to its right
+            else if(rHit.collider != null && rHit.collider.gameObject.CompareTag("Dissolvable"))
+            {
+                StartCoroutine(Dissolve(rHit.collider.gameObject));
+            }
+        }
     }
 
     // Called when any of the binds associated with Dissolve in input stop being used
     private void OnDissolveCanceled(InputAction.CallbackContext context)
     {
-        Debug.Log("Stopped Dissolving");
+        dissolving = false;
     }
 
     #endregion
@@ -186,5 +203,29 @@ public class PlayerController : MonoBehaviour
     {
         // tells the game to move to the next level
         if(other.gameObject.CompareTag("Goal")) { gm.OpenNextLevel(); }
+    }
+
+    // Dissolves bramble
+    IEnumerator Dissolve(GameObject other)
+    {
+        SpriteRenderer sr = other.GetComponent<SpriteRenderer>();
+        
+        float r = sr.color.r;
+        float g = sr.color.g;
+        float b = sr.color.b;
+        float a = sr.color.a * 255;
+
+        // fades the bramble
+        while((a > 0) && isDissolvable && dissolving)
+        {
+            a -= 1f;
+            sr.color = new Color(r, g, b, (a / 255f));
+            yield return new WaitForSeconds(0.01f);
+        }
+
+        dissolving = false;
+
+        // makes sure other finished dissolving rather than player moved
+        if(a <= 0) { other.SetActive(false); }
     }
 }

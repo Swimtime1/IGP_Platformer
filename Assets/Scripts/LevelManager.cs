@@ -30,14 +30,14 @@ public class LevelManager : MonoBehaviour
         ChooseLev(currLev);
     }
 
-    // Updates the maximum level unlocked and calls ChooseLev(maxLev + 1)
+    // Updates the maximum level unlocked and calls ChooseLev(currLev + 1)
     public void ChooseLev()
     {
         currLev++;
         if(currLev > maxLev) { maxLev = currLev; } // updates maxLev if necessary
         
         // makes sure another level is available
-        if(maxLev < levels.Length) { ChooseLev(maxLev); }
+        if(maxLev < levels.Length) { ChooseLev(currLev); }
         else { Debug.Log("Moving to next level"); }
     }
 
@@ -51,4 +51,14 @@ public class LevelManager : MonoBehaviour
         playerController.MoveLevels(startPos[lev]);
         cam.transform.position = camPos[lev];
     }
+
+    #region Getters
+
+    // Returns the value of maxLev
+    public int GetMaxLev()
+    {
+        return maxLev;
+    }
+
+    #endregion
 }

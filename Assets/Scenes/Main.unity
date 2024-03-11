@@ -1777,7 +1777,7 @@ MonoBehaviour:
   - {fileID: 116045433}
   - {fileID: 1596790830}
   cam: {fileID: 519420028}
-  currLev: 0
+  currLev: 8
   playerController: {fileID: 1191100704}
   startPos:
   - {x: -6.5, y: -3.625, z: 0}
@@ -2039,7 +2039,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
+  m_Sprite: {fileID: 21300000, guid: b3c68b20fcefd0b4cbf073415789b6e3, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -2423,14 +2423,14 @@ PrefabInstance:
     - target: {fileID: 4145263566051168409, guid: d21ea2d63ac2ddf40a01482c30142862, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
+      objectReference: {fileID: 21300000, guid: ac1c825db1c75114a9138e1a45e3319e, type: 3}
     - target: {fileID: 6713599653657834647, guid: d21ea2d63ac2ddf40a01482c30142862, type: 3}
       propertyPath: m_SpriteTilingProperty.oldSize.x
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6713599653657834647, guid: d21ea2d63ac2ddf40a01482c30142862, type: 3}
       propertyPath: m_SpriteTilingProperty.oldSize.y
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

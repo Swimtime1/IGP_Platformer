@@ -208,7 +208,7 @@ public class PlayerController : MonoBehaviour
     // Dissolves bramble
     IEnumerator Dissolve(GameObject other)
     {
-        SpriteRenderer sr = other.GetComponent<SpriteRenderer>();
+        SpriteRenderer sr = other.transform.GetChild(0).GetComponent<SpriteRenderer>();
         
         float r = sr.color.r;
         float g = sr.color.g;

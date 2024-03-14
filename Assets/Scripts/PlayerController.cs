@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Tilemaps;
 
 public class PlayerController : MonoBehaviour
 {
@@ -28,6 +29,20 @@ public class PlayerController : MonoBehaviour
 
     // RaycastHit2D Variables
     private RaycastHit2D dHit, lHit, rHit;
+
+    // SpriteRenderer Variables
+    private SpriteRenderer currSprite;
+
+    // Sprite Variables
+    [SerializeField] private Sprite leftClimb, rightClimb;
+
+    // Animator Variables
+    Animator animator;
+
+    // RuntimeAnimatorController Variables
+    [SerializeField] private RuntimeAnimatorController lIdle, lWalk, lJump;
+    [SerializeField] private RuntimeAnimatorController rIdle, rWalk, rJump;
+    [SerializeField] private RuntimeAnimatorController lAnim, rAnim;
 
     #endregion
 
@@ -208,7 +223,7 @@ public class PlayerController : MonoBehaviour
     // Dissolves bramble
     IEnumerator Dissolve(GameObject other)
     {
-        SpriteRenderer sr = other.transform.GetChild(0).GetComponent<SpriteRenderer>();
+        Tilemap sr = other.transform.GetChild(0).GetChild(0).GetComponent<Tilemap>();
         
         float r = sr.color.r;
         float g = sr.color.g;

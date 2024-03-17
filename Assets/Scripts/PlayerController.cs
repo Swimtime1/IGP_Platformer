@@ -61,6 +61,7 @@ public class PlayerController : MonoBehaviour
         isDissolvable = CheckTouching("Dissolvable", 8);
 
         UpdateAboveGround();
+        playerAnimator.SetFloat("VerticalForce", rb.velocity.y);
     }
 
     // Called once per set-time frame

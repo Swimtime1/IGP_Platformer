@@ -61,7 +61,7 @@ public class PlayerController : MonoBehaviour
         isDissolvable = CheckTouching("Dissolvable", 8);
 
         UpdateAboveGround();
-        playerAnimator.SetFloat("VerticalForce", rb.velocity.y);
+        playerAnimator.SetBool("IsClimbing", (rb.velocity.y == 0f));
     }
 
     // Called once per set-time frame
@@ -126,7 +126,6 @@ public class PlayerController : MonoBehaviour
         // Determines if this object is touching the ground below it
         if(dHit.collider != null && dHit.collider.gameObject.CompareTag("Ground"))
         { playerAnimator.SetBool("AboveGround", false); }
-        else { playerAnimator.SetBool("AboveGround", true); }
     }
 
     #endregion
@@ -228,6 +227,14 @@ public class PlayerController : MonoBehaviour
     {
         // tells the game to move to the next level
         if(other.gameObject.CompareTag("Goal")) { gm.OpenNextLevel(); }
+    }
+
+    // Called when the Player exits a collision
+    void OnCollisionExit2D(Collision2D other)
+    {
+        // updates animator to JumpClimb_BlendTree
+        if(other.gameObject.CompareTag("Ground")) 
+        { playerAnimator.SetBool("AboveGround", true); }
     }
 
     // Dissolves bramble

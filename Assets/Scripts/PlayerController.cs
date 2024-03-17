@@ -30,19 +30,11 @@ public class PlayerController : MonoBehaviour
     // RaycastHit2D Variables
     private RaycastHit2D dHit, lHit, rHit;
 
-    // SpriteRenderer Variables
-    private SpriteRenderer currSprite;
-
-    // Sprite Variables
-    [SerializeField] private Sprite leftClimb, rightClimb;
-
     // Animator Variables
-    Animator animator;
+    [SerializeField] private Animator playerAnimator;
 
-    // RuntimeAnimatorController Variables
-    [SerializeField] private RuntimeAnimatorController lIdle, lWalk, lJump;
-    [SerializeField] private RuntimeAnimatorController rIdle, rWalk, rJump;
-    [SerializeField] private RuntimeAnimatorController lAnim, rAnim;
+    // SpriteRenderer
+    [SerializeField] private SpriteRenderer spriteRenderer;
 
     #endregion
 
@@ -67,6 +59,8 @@ public class PlayerController : MonoBehaviour
         isPush = CheckTouching("Push Block", 1);
         isGround = CheckTouching("Ground", 1) || isPush;
         isDissolvable = CheckTouching("Dissolvable", 8);
+
+        UpdateAboveGround();
     }
 
     // Called once per set-time frame
@@ -97,7 +91,7 @@ public class PlayerController : MonoBehaviour
         Debug.DrawRay(transform.position, Vector2.right * castDist, Color.red, 0f); // draws ray in scene
     }
 
-    // Checks if the player can jump
+    // Checks if the player is touching anything that affects actions
     private bool CheckTouching(string other, int lev)
     {
         bool pastLev = lm.GetMaxLev() >= lev;
@@ -123,6 +117,15 @@ public class PlayerController : MonoBehaviour
 
         // Assumes other is not being touched
         return false;
+    }
+
+    // Updates playerAnimator to reflect whether the player is on the ground
+    private void UpdateAboveGround()
+    {
+        // Determines if this object is touching the ground below it
+        if(dHit.collider != null && dHit.collider.gameObject.CompareTag("Ground"))
+        { playerAnimator.SetBool("AboveGround", false); }
+        else { playerAnimator.SetBool("AboveGround", true); }
     }
 
     #endregion
@@ -157,12 +160,18 @@ public class PlayerController : MonoBehaviour
     private void OnMovePerformed(InputAction.CallbackContext context)
     {
         horizontalMove = context.ReadValue<Vector2>().x;
+        playerAnimator.SetFloat("HorizontalInput", horizontalMove);
+
+        // sets direction player is facing
+        if(horizontalMove > 0) { spriteRenderer.flipX = false; }
+        else if(horizontalMove < 0) { spriteRenderer.flipX = true; }
     }
 
     // Called when any of the binds associated with Move in input stop being used
     private void OnMoveCanceled(InputAction.CallbackContext context)
     {
         horizontalMove = 0f;
+        playerAnimator.SetFloat("HorizontalInput", 0f);
     }
 
     // Called when any of the binds associated with Jump in input are used
@@ -224,6 +233,8 @@ public class PlayerController : MonoBehaviour
     IEnumerator Dissolve(GameObject other)
     {
         Tilemap sr = other.transform.GetChild(0).GetChild(0).GetComponent<Tilemap>();
+        ParticleSystem flames = other.transform.GetChild(1).GetComponent<ParticleSystem>();
+        flames.Play();
         
         float r = sr.color.r;
         float g = sr.color.g;
@@ -239,6 +250,7 @@ public class PlayerController : MonoBehaviour
         }
 
         dissolving = false;
+        flames.Stop();
 
         // makes sure other finished dissolving rather than player moved
         if(a <= 0) { other.SetActive(false); }

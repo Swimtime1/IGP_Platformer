@@ -11,8 +11,7 @@ public class LevelManager : MonoBehaviour
     public GameObject cam;
 
     // Integer Variables
-    public int currLev;
-    private int maxLev;
+    [SerializeField] private int currLev, maxLev;
 
     // Script Variables
     public PlayerController playerController;

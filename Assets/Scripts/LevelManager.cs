@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class LevelManager : MonoBehaviour
 {
@@ -8,6 +9,7 @@ public class LevelManager : MonoBehaviour
     
     // GameObject Variables
     public GameObject[] levels;
+    [SerializeField] private GameObject[] levelButtons;
     public GameObject cam;
 
     // Integer Variables
@@ -46,6 +48,7 @@ public class LevelManager : MonoBehaviour
         // closes previous level if it exists
         if(lev - 1 >= 0) { levels[lev - 1].SetActive(false); }
 
+        currLev = lev;
         levels[lev].SetActive(true);
         playerController.MoveLevels(startPos[lev]);
         cam.transform.position = camPos[lev];
@@ -57,6 +60,28 @@ public class LevelManager : MonoBehaviour
     public int GetMaxLev()
     {
         return maxLev;
+    }
+
+    #endregion
+
+    #region Unlocks
+
+    // Unlocks every level in the Level Select Menu up to maxLev
+    private void UnlockThrough()
+    {
+        // loops through every level through maxLev
+        for(int i = 0; i < maxLev; i++)
+        {
+            levelButtons[i].GetComponent<Button>().interactable = true;
+            levelButtons[i].transform.GetChild(1).gameObject.SetActive(false);
+        }
+
+        // loops through every level through maxLev
+        for(int i = maxLev; i < levelButtons.Length; i++)
+        {
+            levelButtons[i].GetComponent<Button>().interactable = false;
+            levelButtons[i].transform.GetChild(1).gameObject.SetActive(true);
+        }
     }
 
     #endregion

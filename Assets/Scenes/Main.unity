@@ -1679,7 +1679,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &332852725
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2053,7 +2053,7 @@ GameObject:
   - component: {fileID: 364816809}
   - component: {fileID: 364816808}
   m_Layer: 0
-  m_Name: Climbing Tutorial
+  m_Name: Pushing Tutorial
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -9118,7 +9118,7 @@ MonoBehaviour:
   - {fileID: 116045433}
   - {fileID: 1596790830}
   cam: {fileID: 519420028}
-  currLev: 8
+  currLev: 6
   maxLev: 8
   playerController: {fileID: 1191100704}
   startPos:
@@ -9254,7 +9254,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8446092141909518840, guid: 2a586f78a8f685543bf768ff6bb07ff1, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8699074009491267092, guid: 2a586f78a8f685543bf768ff6bb07ff1, type: 3}
       propertyPath: m_LocalPosition.x
@@ -11364,7 +11364,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 76dbf9a54db4b5f438e8f9388bb6e346, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 8a12e772aa6d6c4409b409912c165f43, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -13173,6 +13173,10 @@ PrefabInstance:
     - target: {fileID: 8446092141909518840, guid: 2a586f78a8f685543bf768ff6bb07ff1, type: 3}
       propertyPath: m_Name
       value: Level 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 8446092141909518840, guid: 2a586f78a8f685543bf768ff6bb07ff1, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8699074009491267092, guid: 2a586f78a8f685543bf768ff6bb07ff1, type: 3}
       propertyPath: m_LocalPosition.x

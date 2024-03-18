@@ -62,6 +62,7 @@ public class PlayerController : MonoBehaviour
 
         UpdateAboveGround();
         playerAnimator.SetBool("IsClimbing", (rb.velocity.y == 0f));
+        UpdatePushing();
     }
 
     // Called once per set-time frame
@@ -105,13 +106,15 @@ public class PlayerController : MonoBehaviour
         if(other == "Ground") { pastLev = lm.GetMaxLev() >= (lev + 2); }
 
         // Determines if this object is touching a specific type of object to its left
-        if(lHit.collider != null && lHit.collider.gameObject.CompareTag(other) && pastLev)
+        if(lHit.collider != null && lHit.collider.gameObject.CompareTag(other) 
+            && pastLev && spriteRenderer.flipX)
         {
             return true;
         }
 
         // Determines if this object is touching a specific type of object to its right
-        if(rHit.collider != null && rHit.collider.gameObject.CompareTag(other) && pastLev)
+        if(rHit.collider != null && rHit.collider.gameObject.CompareTag(other) 
+            && pastLev && !spriteRenderer.flipX)
         {
             return true;
         }
@@ -123,9 +126,30 @@ public class PlayerController : MonoBehaviour
     // Updates playerAnimator to reflect whether the player is on the ground
     private void UpdateAboveGround()
     {
+        bool onGround = dHit.collider != null && dHit.collider.gameObject.CompareTag("Ground");
+        bool onRock = dHit.collider != null && dHit.collider.gameObject.CompareTag("Push Block");
+        bool onWall = dHit.collider != null && dHit.collider.gameObject.CompareTag("Wall");
+        
         // Determines if this object is touching the ground below it
-        if(dHit.collider != null && dHit.collider.gameObject.CompareTag("Ground"))
+        if(onGround || onRock || onWall)
         { playerAnimator.SetBool("AboveGround", false); }
+    }
+
+    // Updates playerAnimator to reflect whether the player is on the ground
+    private void UpdatePushing()
+    {
+        bool onLeft = lHit.collider != null;
+        onLeft = onLeft && lHit.collider.gameObject.CompareTag("Push Block");
+        onLeft = onLeft && spriteRenderer.flipX;
+
+        bool onRight = rHit.collider != null;
+        onRight = onRight && rHit.collider.gameObject.CompareTag("Push Block");
+        onRight = onRight && !spriteRenderer.flipX;
+        
+        // Determines if this object is pushing a rock
+        if(onLeft || onRight)
+        { playerAnimator.SetBool("IsPushing", true); }
+        else { playerAnimator.SetBool("IsPushing", false); }
     }
 
     #endregion
@@ -232,8 +256,12 @@ public class PlayerController : MonoBehaviour
     // Called when the Player exits a collision
     void OnCollisionExit2D(Collision2D other)
     {
+        bool otherIsGround = other.gameObject.CompareTag("Ground");
+        bool otherIsRock = other.gameObject.CompareTag("Push Block");
+        bool otherIsWall = other.gameObject.CompareTag("Wall");
+        
         // updates animator to JumpClimb_BlendTree
-        if(other.gameObject.CompareTag("Ground")) 
+        if(otherIsGround || otherIsRock || otherIsWall) 
         { playerAnimator.SetBool("AboveGround", true); }
     }
 

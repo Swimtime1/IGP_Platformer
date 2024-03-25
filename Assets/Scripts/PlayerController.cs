@@ -55,26 +55,32 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        DrawCast();
-        isPush = CheckTouching("Push Block", 1);
-        isGround = CheckTouching("Ground", 1) || isPush;
-        isDissolvable = CheckTouching("Dissolvable", 8);
+        if(GameManager.gameActive)
+        {
+            DrawCast();
+            isPush = CheckTouching("Push Block", 1);
+            isGround = CheckTouching("Ground", 1) || isPush;
+            isDissolvable = CheckTouching("Dissolvable", 8);
 
-        UpdateAboveGround();
-        playerAnimator.SetBool("IsClimbing", (rb.velocity.y == 0f));
-        UpdatePushing();
+            UpdateAboveGround();
+            playerAnimator.SetBool("IsClimbing", (rb.velocity.y == 0f));
+            UpdatePushing();
+        }
     }
 
     // Called once per set-time frame
     void FixedUpdate()
     {
-        rb.velocity = new Vector3(horizontalMove * speed, rb.velocity.y, 0);
-
-        // applies upward force to the object, and says its no longer jumping
-        if(jump && isGround)
+        if(GameManager.gameActive)
         {
-            rb.AddForce(Vector2.up * jumpLim, ForceMode2D.Impulse);
-            jump = false;
+            rb.velocity = new Vector3(horizontalMove * speed, rb.velocity.y, 0);
+
+            // applies upward force to the object, and says its no longer jumping
+            if(jump && isGround)
+            {
+                rb.AddForce(Vector2.up * jumpLim, ForceMode2D.Impulse);
+                jump = false;
+            }
         }
     }
 

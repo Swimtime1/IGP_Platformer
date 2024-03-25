@@ -12015,7 +12015,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1105b81818e4b49429631da5679e650a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 10
+  speed: 5
   jumpLim: 7
   castDist: 0.6
   rb: {fileID: 1191100702}

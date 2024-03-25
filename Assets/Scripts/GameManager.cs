@@ -5,6 +5,7 @@ using TMPro;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using UnityEngine.InputSystem;
 
 public class GameManager : MonoBehaviour
 {
@@ -17,7 +18,7 @@ public class GameManager : MonoBehaviour
     // TextMeshProUGUI Variables
 
     // Boolean Variables
-    public static bool gameActive;
+    public static bool gameActive, gameStarted;
 
     // Integer Variables
 
@@ -31,20 +32,22 @@ public class GameManager : MonoBehaviour
 
     // Script Variables
     public LevelManager lm;
+    private PlatformerActions input;
 
     #endregion
+
+    // Called when the game is loaded
+    private void Awake()
+    {
+        input = new PlatformerActions();
+    }
     
     // Start is called before the first frame update
     void Start()
     {
         gameActive = false;
+        gameStarted = false;
     }
-
-    /* // Update is called once per frame
-    void Update()
-    {
-        
-    } */
 
     #region Menu Operations
     
@@ -62,6 +65,7 @@ public class GameManager : MonoBehaviour
     public void OpenStart()
     {
         gameActive = false;
+        gameStarted = false;
         CloseMenus();
         startScreen.SetActive(true);
     }
@@ -89,6 +93,7 @@ public class GameManager : MonoBehaviour
         CloseMenus();
         inGameUI.SetActive(true);
         gameActive = true;
+        gameStarted = true;
     }
 
     // Opens the Pause Menu
@@ -110,4 +115,39 @@ public class GameManager : MonoBehaviour
         cam.SetActive(true);
         gameActive = true;
     }
+
+    #region Input
+    
+    // Called when the script is enabled
+    private void OnEnable()
+    {
+        input.Enable();
+        input.Menus.PauseMenu.performed += OnPausePerformed;
+        input.Menus.CloseStart.performed += OnStartPerformed;
+    }
+
+    // Called when the script is disabled
+    private void OnDisable()
+    {
+        input.Disable();
+        input.Menus.PauseMenu.performed -= OnPausePerformed;
+        input.Menus.CloseStart.performed -= OnStartPerformed;
+    }
+
+    // Called when any of the binds associated with PauseMenu in input are used
+    private void OnPausePerformed(InputAction.CallbackContext context)
+    {
+        // only opens the pause menu if the game is active
+        if(pauseScreen.activeSelf) { OpenGameUI(); }
+        else if(gameStarted) { OpenPause(); }
+    }
+
+    // Called when any of the binds associated with CloseStart in input are used
+    private void OnStartPerformed(InputAction.CallbackContext context)
+    {
+        // only opens the level selection menu if the start menu is active
+        if(startScreen.activeSelf) { ChooseGame(); }
+    }
+
+    #endregion
 }

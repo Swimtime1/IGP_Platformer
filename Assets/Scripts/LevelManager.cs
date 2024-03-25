@@ -29,13 +29,15 @@ public class LevelManager : MonoBehaviour
         maxLev = currLev;
 
         ChooseLev(currLev);
+
+        UnlockThrough();
     }
 
     // Updates the maximum level unlocked and calls ChooseLev(currLev + 1)
     public void ChooseLev()
     {
         currLev++;
-        if(currLev > maxLev) { maxLev = currLev; } // updates maxLev if necessary
+        if(currLev > maxLev) { UnlockMax(); }
         
         // makes sure another level is available
         if(maxLev < levels.Length) { ChooseLev(currLev); }
@@ -70,18 +72,27 @@ public class LevelManager : MonoBehaviour
     private void UnlockThrough()
     {
         // loops through every level through maxLev
-        for(int i = 0; i < maxLev; i++)
+        for(int i = 0; i <= maxLev; i++)
         {
             levelButtons[i].GetComponent<Button>().interactable = true;
             levelButtons[i].transform.GetChild(1).gameObject.SetActive(false);
         }
 
         // loops through every level through maxLev
-        for(int i = maxLev; i < levelButtons.Length; i++)
+        for(int i = maxLev + 1; i < levelButtons.Length; i++)
         {
             levelButtons[i].GetComponent<Button>().interactable = false;
             levelButtons[i].transform.GetChild(1).gameObject.SetActive(true);
         }
+    }
+
+    // Unlocks the new Maximum Level
+    private void UnlockMax()
+    {
+        maxLev = currLev;
+
+        levelButtons[maxLev].GetComponent<Button>().interactable = true;
+        levelButtons[maxLev].transform.GetChild(1).gameObject.SetActive(false);
     }
 
     #endregion

@@ -47,6 +47,7 @@ public class GameManager : MonoBehaviour
     {
         gameActive = false;
         gameStarted = false;
+        OpenStart();
     }
 
     #region Menu Operations

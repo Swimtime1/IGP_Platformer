@@ -10,7 +10,7 @@ public class LevelManager : MonoBehaviour
     // GameObject Variables
     public GameObject[] levels;
     [SerializeField] private GameObject[] levelButtons;
-    public GameObject cam;
+    public GameObject cam, backGround;
 
     // Integer Variables
     [SerializeField] private int currLev, maxLev;
@@ -54,6 +54,7 @@ public class LevelManager : MonoBehaviour
         levels[lev].SetActive(true);
         playerController.MoveLevels(startPos[lev]);
         cam.transform.position = camPos[lev];
+        backGround.transform.position = new Vector3(camPos[lev].x, camPos[lev].y, 0f);
     }
 
     #region Getters

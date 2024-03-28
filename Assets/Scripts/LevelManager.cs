@@ -91,8 +91,12 @@ public class LevelManager : MonoBehaviour
     {
         maxLev = currLev;
 
-        levelButtons[maxLev].GetComponent<Button>().interactable = true;
-        levelButtons[maxLev].transform.GetChild(1).gameObject.SetActive(false);
+        // makes sure maxLev is inbounds before unlocking
+        if(maxLev < levelButtons.Length)
+        {
+            levelButtons[maxLev].GetComponent<Button>().interactable = true;
+            levelButtons[maxLev].transform.GetChild(1).gameObject.SetActive(false);
+        }
     }
 
     #endregion

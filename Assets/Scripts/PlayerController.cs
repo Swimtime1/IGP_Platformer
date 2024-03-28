@@ -276,6 +276,7 @@ public class PlayerController : MonoBehaviour
     {
         Tilemap sr = other.transform.GetChild(0).GetChild(0).GetComponent<Tilemap>();
         ParticleSystem flames = other.transform.GetChild(1).GetComponent<ParticleSystem>();
+        playerAnimator.SetBool("IsBurning", true);
         flames.Play();
         
         float r = sr.color.r;
@@ -292,6 +293,7 @@ public class PlayerController : MonoBehaviour
         }
 
         dissolving = false;
+        playerAnimator.SetBool("IsBurning", false);
         flames.Stop();
 
         // makes sure other finished dissolving rather than player moved

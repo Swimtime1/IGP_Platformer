@@ -10,6 +10,7 @@ public class TutorialButtonPress : MonoBehaviour
 
     // Float Variables
     private float rBut, gBut, bBut;
+    [SerializeField] private float delay;
 
     // Image Variables
     [SerializeField] private Image button;
@@ -22,16 +23,30 @@ public class TutorialButtonPress : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        rBut = button.color.r;
-        gBut = button.color.g;
-        bBut = button.color.b;
-
-        StartCoroutine(Blink());
+        try
+        {
+            rBut = button.color.r;
+            gBut = button.color.g;
+            bBut = button.color.b;
+        }
+        catch
+        {
+            rBut = 0f;
+            gBut = 0f;
+            bBut = 0f;
+        }
+        finally
+        {
+            StartCoroutine(Blink());
+        }
     }
 
     // Causes Tutorial Buttons to blink
     IEnumerator Blink()
     {
+        // delays the start of the IEnumerator if a delay is provided
+        //if(delay > 0) { yield return new WaitForSeconds(delay); }
+
         // stops when the Start Menu is no longer showing
         while(true)
         {

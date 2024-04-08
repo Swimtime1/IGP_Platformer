@@ -40,7 +40,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private AudioSource audio;
 
     // AudioClip Variables
-    [SerializeField] private AudioClip step;
+    [SerializeField] private AudioClip step, burn;
 
     #endregion
 
@@ -283,6 +283,7 @@ public class PlayerController : MonoBehaviour
         Tilemap sr = other.transform.GetChild(0).GetChild(0).GetComponent<Tilemap>();
         ParticleSystem flames = other.transform.GetChild(1).GetComponent<ParticleSystem>();
         playerAnimator.SetBool("IsBurning", true);
+        audio.Play();
         flames.Play();
         
         float r = sr.color.r;
@@ -301,6 +302,7 @@ public class PlayerController : MonoBehaviour
         dissolving = false;
         playerAnimator.SetBool("IsBurning", false);
         flames.Stop();
+        audio.Stop();
 
         // makes sure other finished dissolving rather than player moved
         if(a <= 0) { other.SetActive(false); }

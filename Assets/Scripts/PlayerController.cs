@@ -69,7 +69,7 @@ public class PlayerController : MonoBehaviour
             isDissolvable = CheckTouching("Dissolvable", 8);
 
             UpdateAboveGround();
-            playerAnimator.SetBool("IsClimbing", (rb.velocity.y == 0f));
+            playerAnimator.SetBool("IsClimbing", ((rb.velocity.y == 0f) && (rb.velocity.x == 0f)));
             UpdatePushing();
         }
     }
@@ -159,7 +159,7 @@ public class PlayerController : MonoBehaviour
         onRight = onRight && !spriteRenderer.flipX;
         
         // Determines if this object is pushing a rock
-        if(onLeft || onRight)
+        if((onLeft || onRight) && (rb.velocity.y == 0))
         { playerAnimator.SetBool("IsPushing", true); }
         else { playerAnimator.SetBool("IsPushing", false); }
     }

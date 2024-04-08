@@ -36,6 +36,12 @@ public class PlayerController : MonoBehaviour
     // SpriteRenderer
     [SerializeField] private SpriteRenderer spriteRenderer;
 
+    // AudioSource Variables
+    [SerializeField] private AudioSource audio;
+
+    // AudioClip Variables
+    [SerializeField] private AudioClip step;
+
     #endregion
 
     // Called when the game is loaded
@@ -299,4 +305,14 @@ public class PlayerController : MonoBehaviour
         // makes sure other finished dissolving rather than player moved
         if(a <= 0) { other.SetActive(false); }
     }
+
+    #region Audio
+    
+    // Simply plays a walking sound
+    public void PlayWalk()
+    {
+        audio.PlayOneShot(step);
+    }
+
+    #endregion
 }

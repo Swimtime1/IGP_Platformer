@@ -18,4 +18,5 @@ RESOURCES:
 * Player Character sprites and animation created in collaboration with Carolyn Gabbe
 * Sprites created using Ibis
 * Fantasy Classical Themes by TheoJT -- https://freesound.org/s/511311/ -- License: Attribution 4.0
+* Grass Step Right by spycrah -- https://freesound.org/s/535222/ -- License: Attribution 4.0
 * 

@@ -17,7 +17,7 @@ public class PlayerController : MonoBehaviour
 
     // Boolean Variables
     private bool jump, isDissolvable, dissolving;
-    public bool isGround, isPush;
+    public bool isGround, isPush, isWall;
 
     // Script Variables
     private PlatformerActions input;
@@ -69,7 +69,9 @@ public class PlayerController : MonoBehaviour
             isDissolvable = CheckTouching("Dissolvable", 8);
 
             UpdateAboveGround();
-            playerAnimator.SetBool("IsClimbing", ((rb.velocity.y == 0f) && (rb.velocity.x == 0f)));
+            bool yVel = (rb.velocity.y == 0f);
+            bool xVel = (rb.velocity.x == 0f);
+            playerAnimator.SetBool("IsClimbing", ((yVel || isWall) && xVel));
             UpdatePushing();
         }
     }
@@ -79,11 +81,19 @@ public class PlayerController : MonoBehaviour
     {
         if(GameManager.gameActive)
         {
-            rb.velocity = new Vector3(horizontalMove * speed, rb.velocity.y, 0);
+            // prevents clinging to non-climbable walls
+            if(isWall && !isGround)
+            {
+                float yVel = (Mathf.Abs(rb.velocity.y) * -1);
+                if(yVel == 0f) { yVel = -10; }
+                rb.velocity = new Vector3(0, yVel, 0);
+            }
+            else { rb.velocity = new Vector3(horizontalMove * speed, rb.velocity.y, 0); }
 
             // applies upward force to the object, and says its no longer jumping
             if(jump && isGround)
             {
+                rb.velocity = new Vector3(rb.velocity.x, 0, 0);
                 rb.AddForce(Vector2.up * jumpLim, ForceMode2D.Impulse);
                 jump = false;
             }
@@ -127,6 +137,27 @@ public class PlayerController : MonoBehaviour
         // Determines if this object is touching a specific type of object to its right
         if(rHit.collider != null && rHit.collider.gameObject.CompareTag(other) 
             && pastLev && !spriteRenderer.flipX)
+        {
+            return true;
+        }
+
+        // Assumes other is not being touched
+        return false;
+    }
+
+    // Checks if the player is touching anything that affects actions
+    private bool CheckTouchingSides(string other)
+    {
+        // Determines if this object is touching a specific type of object to its left
+        if(lHit.collider != null && lHit.collider.gameObject.CompareTag(other) 
+            && spriteRenderer.flipX)
+        {
+            return true;
+        }
+
+        // Determines if this object is touching a specific type of object to its right
+        if(rHit.collider != null && rHit.collider.gameObject.CompareTag(other) 
+            && !spriteRenderer.flipX)
         {
             return true;
         }
@@ -258,6 +289,8 @@ public class PlayerController : MonoBehaviour
         player.transform.position = pos;
     }
 
+    #region Collisions and Triggers
+    
     // Called when the Player first touches a trigger
     void OnTriggerEnter2D(Collider2D other)
     {
@@ -265,17 +298,25 @@ public class PlayerController : MonoBehaviour
         if(other.gameObject.CompareTag("Goal")) { gm.OpenNextLevel(); }
     }
 
+    // Called when the Player enters a collision
+    void OnCollisionEnter2D(Collision2D other)
+    {
+        isWall = other.gameObject.CompareTag("Wall");
+    }
+
     // Called when the Player exits a collision
     void OnCollisionExit2D(Collision2D other)
     {
         bool otherIsGround = other.gameObject.CompareTag("Ground");
         bool otherIsRock = other.gameObject.CompareTag("Push Block");
-        bool otherIsWall = other.gameObject.CompareTag("Wall");
+        isWall = other.gameObject.CompareTag("Wall");
         
         // updates animator to JumpClimb_BlendTree
-        if(otherIsGround || otherIsRock || otherIsWall) 
+        if(otherIsGround || otherIsRock || isWall) 
         { playerAnimator.SetBool("AboveGround", true); }
     }
+
+    #endregion
 
     // Dissolves bramble
     IEnumerator Dissolve(GameObject other)

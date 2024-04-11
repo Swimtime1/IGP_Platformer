@@ -26,6 +26,7 @@ public class PlayerController : MonoBehaviour
 
     // GameObject Variables
     public GameObject player;
+    [SerializeField] private GameObject tornado;
 
     // RaycastHit2D Variables
     private RaycastHit2D dHit, lHit, rHit;
@@ -56,6 +57,8 @@ public class PlayerController : MonoBehaviour
         jump = false;
         isGround = false;
         dissolving = false;
+
+        tornado.SetActive(false);
     }
 
     // Update is called once per frame
@@ -175,7 +178,10 @@ public class PlayerController : MonoBehaviour
         
         // Determines if this object is touching the ground below it
         if(onGround || onRock || onWall)
-        { playerAnimator.SetBool("AboveGround", false); }
+        { 
+            playerAnimator.SetBool("AboveGround", false);
+            TornadoOff(); 
+        }
     }
 
     // Updates playerAnimator to reflect whether the player is on the ground
@@ -356,6 +362,16 @@ public class PlayerController : MonoBehaviour
     {
         audio.PlayOneShot(step);
     }
+
+    #endregion
+
+    #region Tornado
+
+    // Turns on the tornado
+    public void TornadoOn() { tornado.SetActive(true); }
+
+    // Turns off the tornado
+    public void TornadoOff() { tornado.SetActive(false); }
 
     #endregion
 }

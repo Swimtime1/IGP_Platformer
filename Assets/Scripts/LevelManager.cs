@@ -41,7 +41,7 @@ public class LevelManager : MonoBehaviour
         
         // makes sure another level is available
         if(maxLev < levels.Length) { ChooseLev(currLev); }
-        else { Debug.Log("Moving to next level"); }
+        else { gameObject.GetComponent<GameManager>().OpenWin(); }
     }
 
     // Determines which level to open

@@ -12,7 +12,7 @@ public class GameManager : MonoBehaviour
     #region Variables
     
     // GameObject Variables
-    public GameObject startScreen, winScreen, inGameUI, pauseScreen, chooseScreen;
+    public GameObject startScreen, winScreen, inGameUI, pauseScreen, chooseScreen, credits;
     public GameObject cam;
 
     // TextMeshProUGUI Variables
@@ -60,6 +60,7 @@ public class GameManager : MonoBehaviour
         winScreen.SetActive(false);
         inGameUI.SetActive(false);
         pauseScreen.SetActive(false);
+        credits.SetActive(false);
     }
 
     // Opens the Start Screen
@@ -103,6 +104,14 @@ public class GameManager : MonoBehaviour
         gameActive = false;
         CloseMenus();
         pauseScreen.SetActive(true);
+    }
+
+    // Opens the Credits Menu
+    public void OpenCredits()
+    {
+        gameActive = false;
+        CloseMenus();
+        credits.SetActive(true);
     }
 
     #endregion
@@ -151,4 +160,10 @@ public class GameManager : MonoBehaviour
     }
 
     #endregion
+
+    // Causes the game to close
+    public void Quit()
+    {
+        Application.Quit();
+    }
 }

@@ -75,7 +75,6 @@ public class PlayerController : MonoBehaviour
             bool yVel = (rb.velocity.y == 0f);
             bool xVel = (rb.velocity.x == 0f);
             playerAnimator.SetBool("IsClimbing", ((yVel || isWall) && xVel));
-            Debug.Log(rb.velocity.y);
             UpdatePushing();
         }
     }
@@ -419,7 +418,6 @@ public class PlayerController : MonoBehaviour
             ts.flipX = !ts.flipX;
             yield return new WaitForSeconds(0.01f);
         }
-        Debug.Log("End TornadoSpin()");
     }
 
     #endregion

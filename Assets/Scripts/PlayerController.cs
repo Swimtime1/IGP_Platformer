@@ -68,7 +68,7 @@ public class PlayerController : MonoBehaviour
         {
             DrawCast();
             isPush = CheckTouching("Push Block", 1);
-            isGround = CheckTouching("Ground", 1) || isPush;
+            isGround = CheckTouching("Ground", 0) || isPush;
             isDissolvable = CheckTouching("Dissolvable", 8);
 
             UpdateAboveGround();
@@ -94,7 +94,7 @@ public class PlayerController : MonoBehaviour
             else { rb.velocity = new Vector3(horizontalMove * speed, rb.velocity.y, 0); }
 
             // applies upward force to the object, and says its no longer jumping
-            if(jump && isGround)
+            if(jump && isGround && (lm.GetMaxLev() > 0))
             {
                 rb.velocity = new Vector3(rb.velocity.x, 0, 0);
                 rb.AddForce(Vector2.up * jumpLim, ForceMode2D.Impulse);

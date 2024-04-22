@@ -75,6 +75,7 @@ public class PlayerController : MonoBehaviour
             bool yVel = (rb.velocity.y == 0f);
             bool xVel = (rb.velocity.x == 0f);
             playerAnimator.SetBool("IsClimbing", ((yVel || isWall) && xVel));
+            Debug.Log(rb.velocity.y);
             UpdatePushing();
         }
     }
@@ -85,7 +86,7 @@ public class PlayerController : MonoBehaviour
         if(GameManager.gameActive)
         {
             // prevents clinging to non-climbable walls
-            if(isWall && !isGround)
+            if((isWall || JustToes()) && !isGround)
             {
                 float yVel = (Mathf.Abs(rb.velocity.y) * -1);
                 if(yVel == 0f) { yVel = -10; }
@@ -128,7 +129,7 @@ public class PlayerController : MonoBehaviour
         { return true; }
 
         // Ensures wall jumping can occur a level after regular jumping can
-        if(other == "Ground") { pastLev = lm.GetMaxLev() >= (lev + 2); }
+        if(other == "Ground") { pastLev = lm.GetMaxLev() >= (lev + 3); }
 
         // Determines if this object is touching a specific type of object to its left
         if(lHit.collider != null && lHit.collider.gameObject.CompareTag(other) 
@@ -166,6 +167,34 @@ public class PlayerController : MonoBehaviour
         }
 
         // Assumes other is not being touched
+        return false;
+    }
+
+    // Checks if the Player is still climbing by just the toes
+    private bool JustToes()
+    {
+        // returns false if the Player isn't climbing
+        if(!(spriteRenderer.sprite.name == "Climbing")) { return false; }
+        
+        Vector3 toes = new Vector3(transform.position.x, (transform.position.y - 0.259f), transform.position.z);
+        
+        RaycastHit2D lToesHit = Physics2D.Raycast(toes, Vector2.left, castDist);
+        Debug.DrawRay(toes, Vector2.left * castDist, Color.red, 0f); // draws ray in scene
+
+        RaycastHit2D rToesHit = Physics2D.Raycast(toes, Vector2.right, castDist);
+        Debug.DrawRay(toes, Vector2.right * castDist, Color.red, 0f); // draws ray in scene
+
+        // Determines if this object is touching a specific type of object to its left
+        if(lToesHit.collider != null && lToesHit.collider.gameObject.CompareTag("Ground") 
+            && spriteRenderer.flipX)
+        { return true; }
+
+        // Determines if this object is touching a specific type of object to its right
+        if(rToesHit.collider != null && rToesHit.collider.gameObject.CompareTag("Ground") 
+            && !spriteRenderer.flipX)
+        { return true; }
+
+        // Assumes toes aren't only thing touching
         return false;
     }
 

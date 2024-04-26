@@ -45,7 +45,7 @@ public class BrambleController : MonoBehaviour
         audio.Stop();
 
         // makes sure other finished dissolving rather than player moved
-        if(a <= 0) { this.gameObject.SetActive(false); }
+        if(a <= 0) { Destroy(); }
     }
 
     // Spreads flames to adjacent bramble
@@ -62,5 +62,22 @@ public class BrambleController : MonoBehaviour
             BrambleController bc = group.transform.GetChild(i).GetComponent<BrambleController>();
             StartCoroutine(bc.Dissolve(dissolving, isDissolvable));
         }
+    }
+
+    // Turns off this, and adjacent, bramble
+    private void Destroy()
+    {
+        int numAdj = group.transform.childCount;
+
+        // calls Dissolve for each bramble in group
+        for(int i = 0; i < numAdj; i++)
+        {
+            // skips this object
+            if(group.transform.GetChild(i) == this) { continue; }
+
+            group.transform.GetChild(i).gameObject.SetActive(false);
+        }
+
+        this.gameObject.SetActive(false);
     }
 }

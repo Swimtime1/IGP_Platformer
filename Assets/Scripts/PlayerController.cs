@@ -353,34 +353,19 @@ public class PlayerController : MonoBehaviour
     #endregion
 
     // Dissolves bramble
-    IEnumerator Dissolve(GameObject other)
+    private IEnumerator Dissolve(GameObject other)
     {
-        Tilemap sr = other.transform.GetChild(0).GetChild(0).GetComponent<Tilemap>();
-        ParticleSystem flames = other.transform.GetChild(1).GetComponent<ParticleSystem>();
+        BrambleController bc = other.GetComponent<BrambleController>();
         playerAnimator.SetBool("IsBurning", true);
-        audio.Play();
-        flames.Play();
         
-        float r = sr.color.r;
-        float g = sr.color.g;
-        float b = sr.color.b;
-        float a = sr.color.a * 255;
+        StartCoroutine(bc.Dissolve(dissolving, isDissolvable));
+        bc.Spread(dissolving, isDissolvable);
 
-        // fades the bramble
-        while((a > 0) && isDissolvable && dissolving)
-        {
-            a -= 1f;
-            sr.color = new Color(r, g, b, (a / 255f));
-            yield return new WaitForSeconds(0.01f);
-        }
+        // waits until the bramble signals that it isn't dissolving
+        while(isDissolvable && dissolving) { yield return new WaitForSeconds(0.01f); }
 
         dissolving = false;
         playerAnimator.SetBool("IsBurning", false);
-        flames.Stop();
-        audio.Stop();
-
-        // makes sure other finished dissolving rather than player moved
-        if(a <= 0) { other.SetActive(false); }
     }
 
     #region Audio

@@ -40,7 +40,7 @@ public class BrambleController : MonoBehaviour
         {
             a -= 1f;
             sr.color = new Color(r, g, b, (a / 255f));
-            yield return new WaitForSeconds(0.01f);
+            yield return new WaitForSeconds(0.005f);
         }
 
         pc.SetDissolving(false);

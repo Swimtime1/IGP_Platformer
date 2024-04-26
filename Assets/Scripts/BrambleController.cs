@@ -19,10 +19,13 @@ public class BrambleController : MonoBehaviour
     // ParticleSystem Variables
     [SerializeField] private ParticleSystem flames;
 
+    // Script Variables
+    [SerializeField] private PlayerController pc;
+
     #endregion
     
     // Dissolves bramble
-    public IEnumerator Dissolve(bool dissolving, bool isDissolvable)
+    public IEnumerator Dissolve()
     {
         audio.Play();
         flames.Play();
@@ -33,23 +36,23 @@ public class BrambleController : MonoBehaviour
         float a = sr.color.a * 255;
 
         // fades the bramble
-        while((a > 0) && isDissolvable && dissolving)
+        while((a > 0) && pc.GetIsDissolvable() && pc.GetDissolving())
         {
             a -= 1f;
             sr.color = new Color(r, g, b, (a / 255f));
             yield return new WaitForSeconds(0.01f);
         }
 
-        dissolving = false;
+        pc.SetDissolving(false);
         flames.Stop();
         audio.Stop();
 
-        // makes sure other finished dissolving rather than player moved
+        // makes sure other finished pc.GetDissolving() rather than player moved
         if(a <= 0) { Destroy(); }
     }
 
     // Spreads flames to adjacent bramble
-    public void Spread(bool dissolving, bool isDissolvable)
+    public void Spread()
     {
         int numAdj = group.transform.childCount;
 
@@ -60,7 +63,7 @@ public class BrambleController : MonoBehaviour
             if(group.transform.GetChild(i) == this) { continue; }
 
             BrambleController bc = group.transform.GetChild(i).GetComponent<BrambleController>();
-            StartCoroutine(bc.Dissolve(dissolving, isDissolvable));
+            StartCoroutine(bc.Dissolve());
         }
     }
 

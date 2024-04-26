@@ -103,6 +103,23 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    #region Getters
+
+    // Returns dissolving
+    public bool GetDissolving() { return dissolving; }
+
+    // Returns isDissolvable
+    public bool GetIsDissolvable() { return isDissolvable; }
+
+    #endregion
+
+    #region Setters
+
+    // Updates dissolving
+    public void SetDissolving(bool val) { dissolving = val; }
+
+    #endregion
+
     #region RaycastHit2D
 
     // Updates the Raycasts
@@ -358,8 +375,8 @@ public class PlayerController : MonoBehaviour
         BrambleController bc = other.GetComponent<BrambleController>();
         playerAnimator.SetBool("IsBurning", true);
         
-        StartCoroutine(bc.Dissolve(dissolving, isDissolvable));
-        bc.Spread(dissolving, isDissolvable);
+        StartCoroutine(bc.Dissolve());
+        bc.Spread();
 
         // waits until the bramble signals that it isn't dissolving
         while(isDissolvable && dissolving) { yield return new WaitForSeconds(0.01f); }

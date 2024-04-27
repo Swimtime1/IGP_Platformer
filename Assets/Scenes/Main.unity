@@ -703,7 +703,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &42134741
 RectTransform:
   m_ObjectHideFlags: 0
@@ -11523,13 +11523,14 @@ GameObject:
   - component: {fileID: 701632657}
   - component: {fileID: 701632659}
   - component: {fileID: 701632658}
+  - component: {fileID: 701632660}
   m_Layer: 5
   m_Name: Instructions
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &701632657
 RectTransform:
   m_ObjectHideFlags: 0
@@ -11578,7 +11579,7 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294967295
+    rgba: 16777215
   m_fontColor: {r: 1, g: 1, b: 1, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
@@ -11646,6 +11647,27 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 701632656}
   m_CullTransparentMesh: 1
+--- !u!95 &701632660
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 701632656}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 32defd3d1f50ae946bdbad1aabf87a01, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &763281475
 GameObject:
   m_ObjectHideFlags: 0
@@ -12327,7 +12349,7 @@ MonoBehaviour:
   - {fileID: 1584662431}
   cam: {fileID: 519420028}
   backGround: {fileID: 1962809921}
-  currLev: 9
+  currLev: 0
   maxLev: 0
   playerController: {fileID: 1191100704}
   startPos:
@@ -23716,7 +23738,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8446092141909518840, guid: 2a586f78a8f685543bf768ff6bb07ff1, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8699074009491267092, guid: 2a586f78a8f685543bf768ff6bb07ff1, type: 3}
       propertyPath: m_LocalPosition.x

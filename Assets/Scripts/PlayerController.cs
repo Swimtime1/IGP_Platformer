@@ -347,6 +347,9 @@ public class PlayerController : MonoBehaviour
     {
         // tells the game to move to the next level
         if(other.gameObject.CompareTag("Goal")) { gm.OpenNextLevel(); }
+
+        // removes sprites used for the tutorial
+        else if(other.gameObject.CompareTag("Example Sprite")) { other.gameObject.SetActive(false); }
     }
 
     // Called when the Player enters a collision

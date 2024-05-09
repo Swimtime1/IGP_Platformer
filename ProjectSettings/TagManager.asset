@@ -9,6 +9,7 @@ TagManager:
   - Dissolvable
   - Push Block
   - Wall
+  - Example Sprite
   layers:
   - Default
   - TransparentFX

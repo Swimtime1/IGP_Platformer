@@ -85,7 +85,7 @@ public class PlayerController : MonoBehaviour
         if(GameManager.gameActive)
         {
             // prevents clinging to non-climbable walls
-            if((isWall || JustToes()) && !isGround)
+            if(isWall && !isGround)
             {
                 float yVel = (Mathf.Abs(rb.velocity.y) * -1);
                 if(yVel == 0f) { yVel = -10; }
@@ -100,6 +100,15 @@ public class PlayerController : MonoBehaviour
                 rb.AddForce(Vector2.up * jumpLim, ForceMode2D.Impulse);
                 jump = false;
             }
+
+            /* // pushes the player up once they reach the top of a ledge
+            else if(JustToes())
+            {
+                jump = true;
+                rb.velocity = new Vector3(0, 0, 0);
+                rb.AddForce(Vector2.up * jumpLim, ForceMode2D.Impulse);
+                jump = false;
+            } */
         }
     }
 
@@ -190,7 +199,7 @@ public class PlayerController : MonoBehaviour
     private bool JustToes()
     {
         // returns false if the Player isn't climbing
-        if(!(spriteRenderer.sprite.name == "Climbing")) { return false; }
+        if(!(spriteRenderer.sprite.name == "Climbing") || isGround) { return false; }
         
         Vector3 toes = new Vector3(transform.position.x, (transform.position.y - 0.259f), transform.position.z);
         

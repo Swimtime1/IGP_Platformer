@@ -226,12 +226,8 @@ public class PlayerController : MonoBehaviour
     // Updates playerAnimator to reflect whether the player is on the ground
     private void UpdateAboveGround()
     {
-        bool onGround = dHit.collider != null && dHit.collider.gameObject.CompareTag("Ground");
-        bool onRock = dHit.collider != null && dHit.collider.gameObject.CompareTag("Push Block");
-        bool onWall = dHit.collider != null && dHit.collider.gameObject.CompareTag("Wall");
-        
         // Determines if this object is touching the ground below it
-        if(onGround || onRock || onWall)
+        if(dHit.collider != null && !dHit.collider.gameObject.GetComponent<BoxCollider2D>().isTrigger)
         { 
             playerAnimator.SetBool("AboveGround", false);
             TornadoOff(); 

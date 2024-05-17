@@ -34,8 +34,11 @@ public class PlayerController : MonoBehaviour
     // Animator Variables
     [SerializeField] private Animator playerAnimator;
 
-    // SpriteRenderer
+    // SpriteRenderer Variables
     [SerializeField] private SpriteRenderer spriteRenderer;
+
+    // Sprite Variables
+    [SerializeField] private Sprite wallJump;
 
     // AudioSource Variables
     [SerializeField] private AudioSource audio;
@@ -95,6 +98,7 @@ public class PlayerController : MonoBehaviour
             if(jump && isGround && (lm.GetMaxLev() > 0))
             {
                 playerAnimator.SetBool("IsClimbing", false);
+                spriteRenderer.sprite = wallJump;
                 
                 rb.velocity = new Vector3(rb.velocity.x, 0, 0);
                 rb.AddForce(Vector2.up * jumpLim, ForceMode2D.Impulse);
@@ -258,6 +262,7 @@ public class PlayerController : MonoBehaviour
         bool xVel = (rb.velocity.x == 0f);
         bool isClimbing = (yVel || isWall) && xVel;
         isClimbing = isClimbing || (spriteRenderer.sprite.name == "Climbing");
+        /* isClimbing = isClimbing && (spriteRenderer.sprite.name != "Wall Jump"); */
         isClimbing = isClimbing && (dHit.collider == null);
 
         // determines which side to check for contact

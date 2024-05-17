@@ -14850,6 +14850,7 @@ MonoBehaviour:
   tornado: {fileID: 14329351}
   playerAnimator: {fileID: 1191100705}
   spriteRenderer: {fileID: 1191100700}
+  wallJump: {fileID: 21300000, guid: 071c95c850657ff468e58f4d16fe5ef1, type: 3}
   audio: {fileID: 1191100706}
   step: {fileID: 8300000, guid: 02de2661af7dceb4aa2ade535669dfdc, type: 3}
   burn: {fileID: 0}

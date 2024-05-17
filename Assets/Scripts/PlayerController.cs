@@ -72,9 +72,7 @@ public class PlayerController : MonoBehaviour
             isDissolvable = CheckTouching("Dissolvable", 8);
 
             UpdateAboveGround();
-            bool yVel = (rb.velocity.y == 0f);
-            bool xVel = (rb.velocity.x == 0f);
-            playerAnimator.SetBool("IsClimbing", ((yVel || isWall) && xVel));
+            UpdateClimbing();
             UpdatePushing();
         }
     }
@@ -96,6 +94,8 @@ public class PlayerController : MonoBehaviour
             // applies upward force to the object, and says its no longer jumping
             if(jump && isGround && (lm.GetMaxLev() > 0))
             {
+                playerAnimator.SetBool("IsClimbing", false);
+                
                 rb.velocity = new Vector3(rb.velocity.x, 0, 0);
                 rb.AddForce(Vector2.up * jumpLim, ForceMode2D.Impulse);
                 jump = false;
@@ -251,6 +251,22 @@ public class PlayerController : MonoBehaviour
         else { playerAnimator.SetBool("IsPushing", false); }
     }
 
+    // Updates playerAnimator to reflect whether the player is climbing
+    private void UpdateClimbing()
+    {
+        bool yVel = (rb.velocity.y == 0f);
+        bool xVel = (rb.velocity.x == 0f);
+        bool isClimbing = (yVel || isWall) && xVel;
+        isClimbing = isClimbing || (spriteRenderer.sprite.name == "Climbing");
+        isClimbing = isClimbing && (dHit.collider == null);
+
+        // determines which side to check for contact
+        if(spriteRenderer.flipX) { isClimbing = isClimbing && (lHit.collider != null); }
+        else { isClimbing = isClimbing && (rHit.collider != null); }
+        
+        playerAnimator.SetBool("IsClimbing", isClimbing);
+    }
+    
     #endregion
 
     // Called when the script is enabled

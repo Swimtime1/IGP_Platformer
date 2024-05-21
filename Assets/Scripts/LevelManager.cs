@@ -9,7 +9,7 @@ public class LevelManager : MonoBehaviour
     
     // GameObject Variables
     public GameObject[] levels;
-    [SerializeField] private GameObject[] levelButtons, pushBlocks;
+    [SerializeField] private GameObject[] levelButtons, pushBlocks, dissolvables;
     public GameObject cam, backGround;
 
     // Integer Variables
@@ -110,7 +110,8 @@ public class LevelManager : MonoBehaviour
     private void Reset()
     {
         // Resets Bramble
-        
+        for(int i = 0; i < dissolvables.Length; i++)
+        { dissolvables[i].GetComponent<BrambleController>().Reset(); }
         
         // Resets each Push Block
         for(int i = 0; i < pushBlocks.Length; i++)

@@ -16,7 +16,7 @@ public class PlayerController : MonoBehaviour
     public Rigidbody2D rb;
 
     // Boolean Variables
-    private bool jump, isDissolvable, dissolving, canLedgeJump;
+    private bool jump, isDissolvable, dissolving;
     public bool isGround, isPush, isWall;
 
     // Script Variables
@@ -62,7 +62,6 @@ public class PlayerController : MonoBehaviour
         jump = false;
         isGround = false;
         dissolving = false;
-        canLedgeJump = true;
 
         tornado.SetActive(false);
     }
@@ -81,9 +80,6 @@ public class PlayerController : MonoBehaviour
             isPush = CheckTouching("Push Block", 1);
             isGround = CheckTouching("Ground", 0) || isPush;
             isDissolvable = CheckTouching("Dissolvable", 8);
-
-            // makes sure player doesn't bounce on corners
-            if(isGround && (rb.velocity.y == 0f)) { canLedgeJump = true; }
 
             UpdateAboveGround();
             UpdateClimbing();
@@ -118,13 +114,12 @@ public class PlayerController : MonoBehaviour
             }
 
             // pushes the player up once they reach the top of a ledge
-            else if(JustToes() && /* canLedgeJump */ (spriteRenderer.sprite.name == "Wall Jump"))
+            else if(JustToes() && (spriteRenderer.sprite.name == "Wall Jump"))
             {
                 jump = true;
                 rb.velocity = new Vector3(0, 0, 0);
                 rb.AddForce(Vector2.up * (jumpLim + 1), ForceMode2D.Impulse);
                 jump = false;
-                canLedgeJump = false;
             }
         }
     }

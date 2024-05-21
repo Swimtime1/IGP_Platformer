@@ -9,7 +9,7 @@ public class LevelManager : MonoBehaviour
     
     // GameObject Variables
     public GameObject[] levels;
-    [SerializeField] private GameObject[] levelButtons;
+    [SerializeField] private GameObject[] levelButtons, pushBlocks;
     public GameObject cam, backGround;
 
     // Integer Variables
@@ -19,7 +19,7 @@ public class LevelManager : MonoBehaviour
     public PlayerController playerController;
 
     // Vector3 Variables
-    public Vector3[] startPos, camPos;
+    public Vector3[] startPos, camPos, pushBlockPos;
 
     #endregion
     
@@ -49,6 +49,8 @@ public class LevelManager : MonoBehaviour
     {
         // closes previous level if it exists
         if(lev - 1 >= 0) { levels[lev - 1].SetActive(false); }
+        
+        Reset();
 
         currLev = lev;
         levels[lev].SetActive(true);
@@ -98,6 +100,21 @@ public class LevelManager : MonoBehaviour
             levelButtons[maxLev].GetComponent<Button>().interactable = true;
             levelButtons[maxLev].transform.GetChild(1).gameObject.SetActive(false);
         }
+    }
+
+    #endregion
+
+    #region Resets
+
+    // Determines which level to reset
+    private void Reset()
+    {
+        // Resets Bramble
+        
+        
+        // Resets each Push Block
+        for(int i = 0; i < pushBlocks.Length; i++)
+        { pushBlocks[i].transform.position = pushBlockPos[i]; }
     }
 
     #endregion

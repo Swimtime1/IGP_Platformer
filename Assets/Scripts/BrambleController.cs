@@ -83,4 +83,15 @@ public class BrambleController : MonoBehaviour
 
         this.gameObject.SetActive(false);
     }
+
+    // Resets the Bramble to be as if the level it's in hasn't yet been played
+    public void Reset()
+    {
+        float r = sr.color.r;
+        float g = sr.color.g;
+        float b = sr.color.b;
+        sr.color = new Color(r, g, b, 1.0f);
+        
+        this.gameObject.SetActive(true);
+    }
 }

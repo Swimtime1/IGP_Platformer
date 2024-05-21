@@ -275,6 +275,8 @@ public class PlayerController : MonoBehaviour
     
     #endregion
 
+    #region Input
+    
     // Called when the script is enabled
     private void OnEnable()
     {
@@ -299,8 +301,6 @@ public class PlayerController : MonoBehaviour
         input.Player.Dissolve.canceled -= OnDissolveCanceled;
     }
 
-    #region Input
-    
     // Called when any of the binds associated with Move in input are used
     private void OnMovePerformed(InputAction.CallbackContext context)
     {

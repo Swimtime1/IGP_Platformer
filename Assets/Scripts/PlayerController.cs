@@ -261,7 +261,7 @@ public class PlayerController : MonoBehaviour
     private void UpdateClimbing()
     {
         bool yVel = (rb.velocity.y == 0f);
-        bool xVel = (rb.velocity.x == 0f);
+        bool xVel = (Mathf.Abs(rb.velocity.x) < 0.001f);
         bool isClimbing = (yVel || isWall) && xVel;
         isClimbing = isClimbing || (spriteRenderer.sprite.name == "Climbing");
         isClimbing = isClimbing && (dHit.collider == null);

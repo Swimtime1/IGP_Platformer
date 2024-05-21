@@ -430,8 +430,12 @@ public class PlayerController : MonoBehaviour
     // Turns on the tornado
     public void TornadoOn()
     {
-        /* StartCoroutine(TornadoSpin()); */
-        tornado.SetActive(true);
+        // ensures tornado isn't already on
+        if(!tornado.activeSelf)
+        {
+            tornado.SetActive(true);
+            StartCoroutine(TornadoSpin());
+        }
     }
 
     // Turns off the tornado
@@ -445,7 +449,7 @@ public class PlayerController : MonoBehaviour
     {
         SpriteRenderer ts = tornado.GetComponent<SpriteRenderer>();
         
-        while(tornado.activeInHierarchy)
+        while(tornado.activeSelf)
         {
             ts.flipX = !ts.flipX;
             yield return new WaitForSeconds(0.01f);

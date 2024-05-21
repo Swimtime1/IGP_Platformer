@@ -12534,7 +12534,7 @@ MonoBehaviour:
   - {fileID: 1584662431}
   cam: {fileID: 519420028}
   backGround: {fileID: 1962809921}
-  currLev: 0
+  currLev: 9
   maxLev: 0
   playerController: {fileID: 1191100704}
   startPos:

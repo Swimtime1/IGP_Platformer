@@ -16,7 +16,7 @@ public class PlayerController : MonoBehaviour
     public Rigidbody2D rb;
 
     // Boolean Variables
-    private bool jump, isDissolvable, dissolving;
+    private bool jump, isDissolvable, dissolving, canLedgeJump;
     public bool isGround, isPush, isWall;
 
     // Script Variables
@@ -48,6 +48,8 @@ public class PlayerController : MonoBehaviour
 
     #endregion
 
+    #region At Start
+    
     // Called when the game is loaded
     private void Awake()
     {
@@ -60,19 +62,28 @@ public class PlayerController : MonoBehaviour
         jump = false;
         isGround = false;
         dissolving = false;
+        canLedgeJump = true;
 
         tornado.SetActive(false);
     }
 
+    #endregion
+
+    #region Every Frame
+    
     // Update is called once per frame
     void Update()
     {
+        // only runs if the game is active
         if(GameManager.gameActive)
         {
             DrawCast();
             isPush = CheckTouching("Push Block", 1);
             isGround = CheckTouching("Ground", 0) || isPush;
             isDissolvable = CheckTouching("Dissolvable", 8);
+
+            // makes sure player doesn't bounce on corners
+            if(isGround && (rb.velocity.y == 0f)) { canLedgeJump = true; }
 
             UpdateAboveGround();
             UpdateClimbing();
@@ -83,6 +94,7 @@ public class PlayerController : MonoBehaviour
     // Called once per set-time frame
     void FixedUpdate()
     {
+        // only runs if the game is active
         if(GameManager.gameActive)
         {
             // prevents clinging to non-climbable walls
@@ -105,16 +117,19 @@ public class PlayerController : MonoBehaviour
                 jump = false;
             }
 
-            /* // pushes the player up once they reach the top of a ledge
-            else if(JustToes())
+            // pushes the player up once they reach the top of a ledge
+            else if(JustToes() && /* canLedgeJump */ (spriteRenderer.sprite.name == "Wall Jump"))
             {
                 jump = true;
                 rb.velocity = new Vector3(0, 0, 0);
-                rb.AddForce(Vector2.up * jumpLim, ForceMode2D.Impulse);
+                rb.AddForce(Vector2.up * (jumpLim + 1), ForceMode2D.Impulse);
                 jump = false;
-            } */
+                canLedgeJump = false;
+            }
         }
     }
+
+    #endregion
 
     #region Getters
 
@@ -202,8 +217,10 @@ public class PlayerController : MonoBehaviour
     // Checks if the Player is still climbing by just the toes
     private bool JustToes()
     {
-        // returns false if the Player isn't climbing
-        if(!(spriteRenderer.sprite.name == "Climbing") || isGround) { return false; }
+        // returns false if more than the Player's toes are touching
+        bool lHands = ((lHit.collider != null) && spriteRenderer.flipX);
+        bool rHands = ((rHit.collider != null) && !spriteRenderer.flipX);
+        if(lHands || rHands) { return false; }
         
         Vector3 toes = new Vector3(transform.position.x, (transform.position.y - 0.259f), transform.position.z);
         
@@ -214,14 +231,12 @@ public class PlayerController : MonoBehaviour
         Debug.DrawRay(toes, Vector2.right * castDist, Color.red, 0f); // draws ray in scene
 
         // Determines if this object is touching a specific type of object to its left
-        if(lToesHit.collider != null && lToesHit.collider.gameObject.CompareTag("Ground") 
-            && spriteRenderer.flipX)
-        { return true; }
+        bool lToes = ((lToesHit.collider != null) && spriteRenderer.flipX);
+        if(lToes && lToesHit.collider.gameObject.CompareTag("Ground")) { return true; }
 
         // Determines if this object is touching a specific type of object to its right
-        if(rToesHit.collider != null && rToesHit.collider.gameObject.CompareTag("Ground") 
-            && !spriteRenderer.flipX)
-        { return true; }
+        bool rToes = ((rToesHit.collider != null) && !spriteRenderer.flipX);
+        if(rToes && rToesHit.collider.gameObject.CompareTag("Ground")) { return true; }
 
         // Assumes toes aren't only thing touching
         return false;
@@ -262,7 +277,6 @@ public class PlayerController : MonoBehaviour
         bool xVel = (rb.velocity.x == 0f);
         bool isClimbing = (yVel || isWall) && xVel;
         isClimbing = isClimbing || (spriteRenderer.sprite.name == "Climbing");
-        /* isClimbing = isClimbing && (spriteRenderer.sprite.name != "Wall Jump"); */
         isClimbing = isClimbing && (dHit.collider == null);
 
         // determines which side to check for contact

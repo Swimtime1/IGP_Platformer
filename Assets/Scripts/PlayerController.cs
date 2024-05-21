@@ -188,25 +188,17 @@ public class PlayerController : MonoBehaviour
         return false;
     }
 
-    // Checks if the player is touching anything that affects actions
-    private bool CheckTouchingSides(string other)
+    // Checks if the player's toes are touching anything that affects actions
+    private bool CheckTouchingToes(RaycastHit2D toesHit)
     {
-        // Determines if this object is touching a specific type of object to its left
-        if(lHit.collider != null && lHit.collider.gameObject.CompareTag(other) 
-            && spriteRenderer.flipX)
+        // Determines if the player's toes are touching a Push Block
+        if(!toesHit.collider.gameObject.CompareTag("Ground"))
         {
-            return true;
+            return toesHit.collider.gameObject.CompareTag("Push Block");
         }
 
-        // Determines if this object is touching a specific type of object to its right
-        if(rHit.collider != null && rHit.collider.gameObject.CompareTag(other) 
-            && !spriteRenderer.flipX)
-        {
-            return true;
-        }
-
-        // Assumes other is not being touched
-        return false;
+        // Assumes Ground is being touched
+        return true;
     }
 
     // Checks if the Player is still climbing by just the toes
@@ -227,11 +219,11 @@ public class PlayerController : MonoBehaviour
 
         // Determines if this object is touching a specific type of object to its left
         bool lToes = ((lToesHit.collider != null) && spriteRenderer.flipX);
-        if(lToes && lToesHit.collider.gameObject.CompareTag("Ground")) { return true; }
+        if(lToes && CheckTouchingToes(lToesHit)) { return true; }
 
         // Determines if this object is touching a specific type of object to its right
         bool rToes = ((rToesHit.collider != null) && !spriteRenderer.flipX);
-        if(rToes && rToesHit.collider.gameObject.CompareTag("Ground")) { return true; }
+        if(rToes && CheckTouchingToes(rToesHit)) { return true; }
 
         // Assumes toes aren't only thing touching
         return false;

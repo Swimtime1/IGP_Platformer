@@ -12530,7 +12530,7 @@ MonoBehaviour:
   - {fileID: 1584662431}
   cam: {fileID: 519420028}
   backGround: {fileID: 1962809921}
-  currLev: 3
+  currLev: 6
   maxLev: 0
   playerController: {fileID: 1191100704}
   startPos:
@@ -14840,6 +14840,7 @@ MonoBehaviour:
   speed: 5
   jumpLim: 7
   castDist: 0.6
+  handHeight: 0
   rb: {fileID: 1191100702}
   isGround: 0
   isPush: 0

@@ -430,8 +430,8 @@ public class PlayerController : MonoBehaviour
     // Turns on the tornado
     public void TornadoOn()
     {
-        // ensures tornado isn't already on
-        if(!tornado.activeSelf)
+        // ensures tornado isn't already on, and player is off ground
+        if(!tornado.activeSelf && (dHit.collider == null))
         {
             tornado.SetActive(true);
             StartCoroutine(TornadoSpin());

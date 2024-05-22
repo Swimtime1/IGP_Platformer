@@ -238,6 +238,7 @@ public class PlayerController : MonoBehaviour
             playerAnimator.SetBool("AboveGround", false);
             TornadoOff(); 
         }
+        else { playerAnimator.SetBool("AboveGround", true); }
     }
 
     // Updates playerAnimator to reflect whether the player is on the ground
@@ -388,13 +389,8 @@ public class PlayerController : MonoBehaviour
     // Called when the Player exits a collision
     void OnCollisionExit2D(Collision2D other)
     {
-        bool otherIsGround = other.gameObject.CompareTag("Ground");
-        bool otherIsRock = other.gameObject.CompareTag("Push Block");
-        isWall = other.gameObject.CompareTag("Wall");
-        
-        // updates animator to JumpClimb_BlendTree
-        if(otherIsGround || otherIsRock || isWall) 
-        { playerAnimator.SetBool("AboveGround", true); }
+        // prevents blip
+        if(other.gameObject.CompareTag("Wall")) { isWall = false; }
     }
 
     #endregion

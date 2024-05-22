@@ -14881,6 +14881,7 @@ MonoBehaviour:
   audio: {fileID: 1191100706}
   step: {fileID: 8300000, guid: 02de2661af7dceb4aa2ade535669dfdc, type: 3}
   burn: {fileID: 0}
+  blow: {fileID: 8300000, guid: 1f3331f47c891274889d1c38e57122ee, type: 3}
 --- !u!95 &1191100705
 Animator:
   serializedVersion: 5

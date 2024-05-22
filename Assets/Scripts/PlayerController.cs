@@ -44,7 +44,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private AudioSource audio;
 
     // AudioClip Variables
-    [SerializeField] private AudioClip step, burn;
+    [SerializeField] private AudioClip step;
 
     #endregion
 

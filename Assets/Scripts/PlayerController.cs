@@ -96,7 +96,7 @@ public class PlayerController : MonoBehaviour
             // prevents clinging to non-climbable walls
             if(isWall && !isGround)
             {
-                float yVel = (Mathf.Abs(rb.velocity.y) * -1);
+                float yVel = /* (Mathf.Abs( */rb.velocity.y/* ) * -1) */;
                 if(yVel == 0f) { yVel = -10; }
                 rb.velocity = new Vector3(0, yVel, 0);
             }
@@ -261,9 +261,10 @@ public class PlayerController : MonoBehaviour
     // Updates playerAnimator to reflect whether the player is climbing
     private void UpdateClimbing()
     {
-        bool yVel = (rb.velocity.y == 0f);
+        bool yVel = (isWall && (rb.velocity.y < 0f));
+        yVel = yVel || (rb.velocity.y == 0f);
         bool xVel = (Mathf.Abs(rb.velocity.x) < 0.001f);
-        bool isClimbing = (yVel || isWall) && xVel;
+        bool isClimbing = yVel && xVel;
         isClimbing = isClimbing || (spriteRenderer.sprite.name == "Climbing");
         isClimbing = isClimbing && (dHit.collider == null);
 
@@ -383,7 +384,8 @@ public class PlayerController : MonoBehaviour
     // Called when the Player enters a collision
     void OnCollisionEnter2D(Collision2D other)
     {
-        isWall = other.gameObject.CompareTag("Wall");
+        // detects collision with a sliding wall
+        if(other.gameObject.CompareTag("Wall")) { isWall = true; }
     }
 
     // Called when the Player exits a collision

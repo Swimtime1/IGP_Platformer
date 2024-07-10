@@ -11,9 +11,14 @@ public class HintsController : MonoBehaviour
     [SerializeField] private GameObject hintButton, left, right, close, background;
 
     // Boolean Variables
-    [SerializeField] private bool first, second, third;
+    [SerializeField] private bool firstActive, secondActive, thirdActive;
+    [SerializeField] private bool secondUnlocked, thirdUnlocked;
 
     // TextMeshProUGUI Variables
+    [SerializeField] private TextMeshProUGUI text;
+
+    // String Variables
+    [SerializeField] private string hint1, hint2, hint3;
 
     // Script Variables
 
@@ -28,9 +33,14 @@ public class HintsController : MonoBehaviour
         close.SetActive(false);
         background.SetActive(false);
 
-        first = false;
-        second = false;
-        third = false;
+        firstActive = false;
+        secondActive = false;
+        thirdActive = false;
+        
+        secondUnlocked = false;
+        thirdUnlocked = false;
+
+        StartCoroutine(UnlockHints());
     }
 
     #region Button Press
@@ -41,6 +51,94 @@ public class HintsController : MonoBehaviour
         hintButton.SetActive(false);
         close.SetActive(true);
         background.SetActive(true);
+
+        // starts process to unlock second hint if necessary
+        if(!secondUnlocked && firstActive) { StartCoroutine(UnlockNext()); }
+    }
+
+    // Closes the hints box
+    public void Close()
+    {
+        hintButton.SetActive(true);
+        close.SetActive(false);
+        background.SetActive(false);
+    }
+
+    // Moves to an earlier hint
+    public void MoveLeft()
+    {
+        // checks if the second hint is currently active, and otherwise assumes the third
+        if(secondActive)
+        {
+            secondActive = false;
+            firstActive = true;
+
+            left.SetActive(false);
+            right.SetActive(true);
+
+            text.text = hint1;
+        }
+        else
+        {
+            thirdActive = false;
+            secondActive = true;
+
+            left.SetActive(true);
+            right.SetActive(true);
+
+            text.text = hint2;
+        }
+    }
+
+    // Moves to a later hint
+    public void MoveRight()
+    {
+        // checks if the second hint is currently active, and otherwise assumes the first
+        if(secondActive)
+        {
+            secondActive = false;
+            thirdActive = true;
+
+            left.SetActive(true);
+            right.SetActive(false);
+
+            text.text = hint3;
+        }
+        else
+        {
+            firstActive = false;
+            secondActive = true;
+
+            left.SetActive(true);
+            right.SetActive(true);
+
+            text.text = hint2;
+
+            // starts process to unlock third hint if necessary
+            if(!thirdUnlocked) { StartCoroutine(UnlockNext()); }
+        }
+    }
+
+    #endregion
+
+    #region Coroutines
+
+    // Provides the first hint after 30 seconds
+    private IEnumerator UnlockHints()
+    {
+        // counts down 30 seconds
+        for(int i = 30; i > 0; i--) { yield return new WaitForSeconds(1.0f); }
+
+        hintButton.SetActive(true);
+    }
+
+    // Provides the second hint after 30 seconds
+    private IEnumerator UnlockNext()
+    {
+        // counts down 30 seconds
+        for(int i = 30; i > 0; i--) { yield return new WaitForSeconds(1.0f); }
+
+        right.SetActive(true);
     }
 
     #endregion

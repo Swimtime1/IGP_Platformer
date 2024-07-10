@@ -11,7 +11,7 @@ public class HintsController : MonoBehaviour
     [SerializeField] private GameObject hintButton, left, right, close, background;
 
     // Boolean Variables
-    [SerializeField] private bool firstActive, secondActive, thirdActive;
+    [SerializeField] private bool firstActive, secondActive;
     [SerializeField] private bool secondUnlocked, thirdUnlocked;
 
     // TextMeshProUGUI Variables
@@ -35,7 +35,6 @@ public class HintsController : MonoBehaviour
 
         firstActive = false;
         secondActive = false;
-        thirdActive = false;
         
         secondUnlocked = false;
         thirdUnlocked = false;
@@ -80,7 +79,6 @@ public class HintsController : MonoBehaviour
         }
         else
         {
-            thirdActive = false;
             secondActive = true;
 
             left.SetActive(true);
@@ -97,7 +95,6 @@ public class HintsController : MonoBehaviour
         if(secondActive)
         {
             secondActive = false;
-            thirdActive = true;
 
             left.SetActive(true);
             right.SetActive(false);
@@ -110,12 +107,13 @@ public class HintsController : MonoBehaviour
             secondActive = true;
 
             left.SetActive(true);
-            right.SetActive(true);
+            right.SetActive(false);
 
             text.text = hint2;
 
             // starts process to unlock third hint if necessary
             if(!thirdUnlocked) { StartCoroutine(UnlockNext()); }
+            else { right.SetActive(true); }
         }
     }
 
@@ -129,16 +127,22 @@ public class HintsController : MonoBehaviour
         // counts down 30 seconds
         for(int i = 30; i > 0; i--) { yield return new WaitForSeconds(1.0f); }
 
+        text.text = hint1;
+        firstActive = true;
         hintButton.SetActive(true);
     }
 
-    // Provides the second hint after 30 seconds
+    // Provides another hint after 30 seconds
     private IEnumerator UnlockNext()
     {
         // counts down 30 seconds
         for(int i = 30; i > 0; i--) { yield return new WaitForSeconds(1.0f); }
 
         right.SetActive(true);
+
+        // updates the booleans
+        if(!secondUnlocked) { secondUnlocked = true; }
+        else { thirdUnlocked = true; }
     }
 
     #endregion

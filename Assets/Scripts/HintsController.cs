@@ -125,7 +125,7 @@ public class HintsController : MonoBehaviour
     private IEnumerator UnlockHints()
     {
         // counts down 30 seconds
-        for(int i = 30; i > 0; i--) { yield return new WaitForSeconds(1.0f); }
+        for(int i = 3; i > 0; i--) { yield return new WaitForSeconds(1.0f); }
 
         text.text = hint1;
         firstActive = true;
@@ -136,7 +136,7 @@ public class HintsController : MonoBehaviour
     private IEnumerator UnlockNext()
     {
         // counts down 30 seconds
-        for(int i = 30; i > 0; i--) { yield return new WaitForSeconds(1.0f); }
+        for(int i = 3; i > 0; i--) { yield return new WaitForSeconds(1.0f); }
 
         right.SetActive(true);
 

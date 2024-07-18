@@ -58,6 +58,14 @@ public class LevelManager : MonoBehaviour
         playerController.MoveLevels(startPos[lev]);
         cam.transform.position = camPos[lev];
         backGround.transform.position = new Vector3(camPos[lev].x, camPos[lev].y, 0f);
+
+        // attempts to start countdown for Hints (if there are any)
+        try
+        {
+            HintsController hc = levels[lev].GetComponent<HintsController>();
+            StartCoroutine(hc.UnlockHints());
+        }
+        catch (System.Exception) {}
     }
 
     #region Getters

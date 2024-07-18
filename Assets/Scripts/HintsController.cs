@@ -39,7 +39,7 @@ public class HintsController : MonoBehaviour
         secondUnlocked = false;
         thirdUnlocked = false;
 
-        StartCoroutine(UnlockHints());
+        /* StartCoroutine(UnlockHints()); */
     }
 
     #region Button Press
@@ -122,7 +122,7 @@ public class HintsController : MonoBehaviour
     #region Coroutines
 
     // Provides the first hint after 30 seconds
-    private IEnumerator UnlockHints()
+    public IEnumerator UnlockHints()
     {
         // counts down 30 seconds
         for(int i = 3; i > 0; i--) { yield return new WaitForSeconds(1.0f); }

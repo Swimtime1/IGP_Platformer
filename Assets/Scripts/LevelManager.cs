@@ -10,6 +10,7 @@ public class LevelManager : MonoBehaviour
     // GameObject Variables
     public GameObject[] levels;
     [SerializeField] private GameObject[] levelButtons, pushBlocks, dissolvables;
+    [SerializeField] private GameObject[] hintButtons, hintScreens;
     public GameObject cam, backGround;
 
     // Integer Variables
@@ -116,6 +117,17 @@ public class LevelManager : MonoBehaviour
         // Resets each Push Block
         for(int i = 0; i < pushBlocks.Length; i++)
         { pushBlocks[i].transform.position = pushBlockPos[i]; }
+        
+        // Closes each Hint Screen
+        for(int i = 0; i < hintScreens.Length; i++)
+        {
+            // checks that Hint Screen is active before activating Hint Button
+            if(hintScreens[i].activeSelf)
+            {
+                hintScreens[i].SetActive(false);
+                hintButtons[i].SetActive(true);
+            }
+        }
     }
 
     #endregion
